@@ -1,0 +1,22 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.idea/
+.vscode/
+*.suo
+*.user
+*.userossc
+*.swp
+
+# Local servers and logs
+*.log
+
+# Python static-server noise
+__pycache__/
+
+# Environment files
+.env
+.env.*
+
