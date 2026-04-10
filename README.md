@@ -1,15 +1,15 @@
 # WrestleMania 42 Monkey
 
-A single-file static landing page concept for a fictional WrestleMania 42 event card.
+A static WrestleMania landing page concept for a fictional WrestleMania 42 event card.
 
 ## Overview
 
 This project is a lightweight HTML/CSS/JavaScript microsite with:
 
 - A premium hero section
-- Match-card sections for a fantasy event lineup
-- Simple reveal-on-scroll interactions
-- A placeholder call-to-action button for future fan-page features
+- Story-card sections for a fantasy event lineup
+- Reveal-on-scroll interactions
+- A Danhausen end-of-page interaction with image and audio playback
 
 The site is intentionally simple: there is no build step, no framework, and no backend.
 
@@ -18,9 +18,16 @@ The site is intentionally simple: there is no build step, no framework, and no b
 ```text
 .
 |-- index.html
+|-- styles.css
+|-- script.js
 |-- Assets/
+|   |-- Danhausen_pointing.png
+|   |-- WM-42-IC-Ladder-Match.png
+|   |-- WM-42-NightOne-BG.png
 |   |-- WM-42-NightTwo-BG.png
-|   `-- WM-42-IC-Ladder-Match.png
+|   |-- wm42.logo.png
+|   `-- audio/
+|       `-- danhausen-you-are-cursed.mp3
 ```
 
 ## Run Locally
@@ -37,16 +44,17 @@ Then open `http://localhost:8080`.
 
 ## Editing Notes
 
-- Most content is hardcoded directly in [`index.html`](/C:/Users/dougs/.codex/wrestlemania-42-monkey/index.html).
-- The CTA currently uses a placeholder `alert()` instead of a real ticket, trailer, or modal flow.
-- Image assets are stored in [`Assets/`](/C:/Users/dougs/.codex/wrestlemania-42-monkey/Assets).
+- Page structure lives in [`index.html`](/C:/Users/dougs/wrestlemania-42-monkey/index.html).
+- Visual styling lives in [`styles.css`](/C:/Users/dougs/wrestlemania-42-monkey/styles.css).
+- Match-story data and page interactions live in [`script.js`](/C:/Users/dougs/wrestlemania-42-monkey/script.js).
+- Image and audio assets are stored in [`Assets/`](/C:/Users/dougs/wrestlemania-42-monkey/Assets).
 
 ## Recommended Next Steps
 
 - Replace fantasy match-card copy with finalized event content
-- Swap the placeholder CTA for a real interaction
 - Add social preview metadata for richer link sharing
-- Split CSS and JavaScript into separate files if the page grows further
+- Run browser QA on desktop and mobile for the story cards and Danhausen section
+- Decide whether the `Experience` nav label still matches the bottom-of-page section
 
 ## License
 

@@ -1,0 +1,437 @@
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, {
+  threshold: 0.14
+});
+
+const bindReveals = (root = document) => {
+  root.querySelectorAll('.reveal').forEach((el) => {
+    if (el.dataset.revealBound === 'true') {
+      return;
+    }
+
+    el.dataset.revealBound = 'true';
+    observer.observe(el);
+  });
+};
+
+const matchStories = [
+  {
+    id: 'ic-ladder',
+    tag: 'Ladder Match',
+    belt: 'Intercontinental Championship',
+    title: 'Penta vs. Rey Mysterio vs. Je’Von Evans vs. Rusev vs. Dragon Lee vs. JD McDonagh vs. El Grande Americano',
+    graphicLabel: 'Seven men. One title. Zero control.',
+    hook: 'A seven-man title collision built from qualifiers, old rivalries, and the kind of ladder-match chaos no champion can truly prepare for.',
+    story: 'Penta arrives at WrestleMania carrying the Intercontinental Title into the most unstable environment possible. Rey Mysterio, Dragon Lee, JD McDonagh, Je’Von Evans and Rusev all earned or forced their way into the field, turning one championship defense into a swarm of unfinished business and opportunistic ambition.',
+    whyNow: 'What started as a standard title picture spiraled into a traffic jam of contenders, each claiming momentum, history, or a path earned in qualifiers. Instead of sorting them one by one, WrestleMania becomes the place where all those claims collide at once above the ring.',
+    stakes: [
+      'The Intercontinental Championship in the most volatile match type on the card',
+      'A breakout WrestleMania moment for any challenger who can outlast six other threats',
+      'Proof that Penta can survive chaos, not just singles-match pressure'
+    ],
+    meta: ['Champion: Penta', 'Stipulation: 7-Man Ladder Match'],
+    accent1: '#ff365f',
+    accent2: '#f59e0b',
+    image: 'Assets/WM-42-IC-Ladder-Match.png',
+    featured: true
+  },
+  {
+    id: 'iyo-asuka',
+    tag: 'Singles Match',
+    belt: 'Personal Rivalry',
+    title: 'Iyo Sky vs. Asuka',
+    graphicLabel: 'Broken trust inside the joshi elite.',
+    hook: 'Former allies and elite stylists collide after betrayal, faction fracture, and months of tension around who truly leads the division.',
+    story: 'The emotional core of this match comes from damage inside Iyo Sky’s own orbit. Asuka and Kairi Sane helped fracture Iyo’s world, leaving her isolated before she rebuilt herself alongside Rhea Ripley. That history makes this more than a showcase of two great wrestlers; it is a score-settling fight about trust, loyalty, and respect.',
+    whyNow: 'WrestleMania is where the fallout finally becomes unavoidable. Iyo has a chance to prove she can stand on her own after the betrayal, while Asuka can remind the division that her instincts, edge, and ruthlessness still make her impossible to overlook.',
+    stakes: [
+      'Division control between two of the sharpest in-ring minds on the card',
+      'Iyo’s chance to close the chapter on the betrayal that changed her path',
+      'Asuka’s chance to reassert fear and hierarchy around her name'
+    ],
+    meta: ['Ringside factor: Kairi Sane', 'Theme: Trust turned violent'],
+    accent1: '#8b5cf6',
+    accent2: '#ff365f'
+  },
+  {
+    id: 'celeb-tag',
+    tag: 'Tag Match',
+    belt: 'Celebrity Spotlight',
+    title: 'Danhausen & Jelly Roll vs. The Miz & Kit Wilson',
+    graphicLabel: 'Mockery, ego, and total chaos.',
+    hook: 'A celebrity feud, a cursed wildcard, and two self-promoters trying to embarrass each other under the brightest lights possible.',
+    story: 'Jelly Roll’s recent WWE story has run through Miz TV drama, taunts from Kit Wilson, and a growing sense that Miz wants to turn every spotlight into his own. Danhausen adds the unpredictable element: the strange disruptor who keeps orbiting this conflict with curses, comic timing, and just enough menace to make the heels uncomfortable.',
+    whyNow: 'The issue stopped being a one-off guest spot the moment Miz and Wilson kept escalating the disrespect. WrestleMania becomes the payoff: Jelly Roll gets to fight back on the biggest stage, while Danhausen gives the match the kind of chaos that makes a celebrity attraction feel dangerous instead of gimmicky.',
+    stakes: [
+      'Public humiliation for whoever loses the most entertainment-heavy match on the card',
+      'A WrestleMania moment for Jelly Roll that proves he belongs in the chaos',
+      'Another spotlight grab for Miz if he can spin the whole spectacle back in his favor'
+    ],
+    meta: ['Wild card: Danhausen', 'Heat source: Miz TV and Kit Wilson taunts'],
+    accent1: '#f97316',
+    accent2: '#ff365f'
+  },
+  {
+    id: 'faction-showcase',
+    tag: 'Faction Showcase',
+    belt: 'Six-Man Spotlight',
+    title: 'The Usos & LA Knight vs. The Vision & IShowSpeed',
+    graphicLabel: 'Pride, noise, and a team war built for a stadium.',
+    hook: 'Months of faction harassment and viral chaos finally cash out in a six-man collision where swagger matters almost as much as the win.',
+    story: 'The Usos and LA Knight have spent months trying to stop a rival crew from hijacking their spotlight. In WWE canon, that tension has revolved around Logan Paul, Austin Theory, and IShowSpeed weaponizing attention and momentum; in this version, The Vision represent that same disruptive force, using Speed as a chaos amplifier around every confrontation.',
+    whyNow: 'This match belongs at WrestleMania because it is louder than a normal grudge match. Every entrance, every staredown, and every hot tag is about which side owns the crowd, the momentum, and the narrative coming out of the weekend.',
+    stakes: [
+      'Faction credibility on a card built around spectacle',
+      'A major WrestleMania spotlight for IShowSpeed if his chaos changes the result',
+      'The Usos and LA Knight proving substance beats noise'
+    ],
+    meta: ['Wild card: IShowSpeed', 'Theme: Attention vs. authenticity'],
+    accent1: '#3b82f6',
+    accent2: '#f97316'
+  },
+  {
+    id: 'womens-us',
+    tag: 'Championship Match',
+    belt: 'Women’s United States Championship',
+    title: 'Giulia vs. Tiffany Stratton',
+    graphicLabel: 'Cold precision meets flash-star confidence.',
+    hook: 'Giulia’s new-title aura crashes into Tiffany Stratton’s entitlement and rising-star confidence, with Kiana James adding another layer of instability.',
+    story: 'Giulia has carried the Women’s United States Championship with a sharp, composed edge that makes every challenger look slightly unready. Tiffany Stratton is the opposite kind of threat: glamorous, loud, and convinced the spotlight should naturally bend toward her. Kiana James hovering around Giulia only adds more tension to every exchange.',
+    whyNow: 'The build works because Tiffany sees Giulia as a champion she can outshine, while Giulia sees Tiffany as a challenger who has not yet earned her right to dictate the division. WrestleMania becomes the perfect place to settle whether prestige or bravado really leads this title.',
+    stakes: [
+      'The credibility of a still-young championship',
+      'Tiffany’s chance to turn charisma into a defining title win',
+      'Giulia’s chance to establish a colder, harder standard for the division'
+    ],
+    meta: ['Champion: Giulia', 'Ringside tension: Kiana James'],
+    accent1: '#ff365f',
+    accent2: '#f59e0b'
+  },
+  {
+    id: 'us-triple-threat',
+    tag: 'Triple Threat',
+    belt: 'United States Championship',
+    title: 'Sami Zayn vs. Trick Williams vs. Carmelo Hayes',
+    graphicLabel: 'One title. Three egos. No clean escape.',
+    hook: 'Sami’s shocking title win lit the fuse, Trick demanded his moment, and Carmelo refused to let the story move past him.',
+    story: 'Sami Zayn shocked Carmelo Hayes in an open challenge to walk out with the United States Championship, instantly changing the whole division. Trick Williams already had reason to demand a WrestleMania shot, but Carmelo’s pride and unfinished business made a clean singles road impossible.',
+    whyNow: 'As a triple threat, the match becomes about more than the title. Sami has to defend a belt he grabbed in explosive fashion, Trick wants the breakout WrestleMania statement, and Carmelo wants the narrative to stop pretending his loss ended the story.',
+    stakes: [
+      'The United States Championship and control of the division’s pace',
+      'A star-making WrestleMania win for Trick or Carmelo',
+      'Sami proving the title change was not just one perfect night'
+    ],
+    meta: ['Champion: Sami Zayn', 'Pressure point: Carmelo won’t let it go'],
+    accent1: '#06b6d4',
+    accent2: '#f59e0b'
+  },
+  {
+    id: 'womens-ic',
+    tag: 'No Holds Barred',
+    belt: 'Women’s Intercontinental Championship',
+    title: 'AJ Lee vs. Becky Lynch',
+    graphicLabel: 'Old edge. New title. Personal damage.',
+    hook: 'One of the most personal women’s feuds on the card reaches WrestleMania with a title, a grudge, and no reason to keep things clean.',
+    story: 'AJ Lee’s return reignited old insecurities and unfinished rivalry with Becky Lynch. AJ has repeatedly found ways to outmaneuver, outtalk, and outfight Becky through mixed-tag chaos, title tension, and a sharper psychological edge than Becky expected.',
+    whyNow: 'By the time Becky attacked after another AJ defense, this had stopped being a technical contest and turned into a fight about pride, legacy, and who gets to define this era. No Holds Barred simply admits what the rivalry has already become.',
+    stakes: [
+      'The Women’s Intercontinental Championship',
+      'Legacy control between two of the division’s sharpest personalities',
+      'Proof of whether Becky can solve AJ when the fight gets ugly'
+    ],
+    meta: ['Champion: AJ Lee', 'Stipulation: No Holds Barred'],
+    accent1: '#ef4444',
+    accent2: '#8b5cf6'
+  },
+  {
+    id: 'world-heavyweight',
+    tag: 'World Title Match',
+    belt: 'World Heavyweight Championship',
+    title: 'CM Punk vs. Roman Reigns',
+    graphicLabel: 'History, resentment, and absolute main-event gravity.',
+    hook: 'Royal Rumble power, years of resentment, and two giant egos make this feel less like a title match and more like a generational argument.',
+    story: 'Roman Reigns earned the right to choose his WrestleMania path by winning the Royal Rumble, then pointed directly at CM Punk. The choice made sense because their issue runs deeper than one season: legacy, old grudges, power shifts, and the lingering history of what each man believes he represents in WWE.',
+    whyNow: 'Punk wants validation that his comeback story can still end on top. Roman wants to prove that even after everything, he remains the gravitational center of the biggest stage. WrestleMania is where that argument has to become physical.',
+    stakes: [
+      'The World Heavyweight Championship and control of the top of Raw',
+      'Legacy leverage in one of WWE’s biggest modern rivalries',
+      'A definitive WrestleMania headline win for either man'
+    ],
+    meta: ['Champion: CM Punk', 'Earned by: Roman’s Royal Rumble win'],
+    accent1: '#ff365f',
+    accent2: '#3b82f6',
+    featured: true
+  },
+  {
+    id: 'undisputed',
+    tag: 'Main Event',
+    belt: 'WWE Undisputed Championship',
+    title: 'Cody Rhodes vs. Randy Orton',
+    graphicLabel: 'Legacy turns inward on the biggest stage.',
+    hook: 'Mentor versus protégé becomes champion versus challenger in a match built on trust, history, and the danger of knowing each other too well.',
+    story: 'Cody Rhodes stands at the center of the company, but Randy Orton knows exactly how dangerous that position can be because he helped shape Cody years ago. Their shared Legacy history gives this match an emotional gravity beyond the title: every promo and staredown carries a sense that Randy knows where Cody is vulnerable because he watched him become this version of himself.',
+    whyNow: 'Orton earned the opportunity and refuses to treat sentiment as protection. Cody had to reclaim the title path first, and now WrestleMania becomes the place where the student has to beat the master without pretending the bond between them still makes the fight safe.',
+    stakes: [
+      'The WWE Undisputed Championship in the match with the deepest shared history',
+      'Cody’s chance to defend his era against the man who helped shape it',
+      'Randy’s chance to turn mentorship into one more defining act of control'
+    ],
+    meta: ['Champion: Cody Rhodes', 'Ringside factor: Pat McAfee'],
+    accent1: '#3b82f6',
+    accent2: '#f59e0b',
+    featured: true
+  },
+  {
+    id: 'wwe-womens',
+    tag: 'Women’s Title Match',
+    belt: 'WWE Women’s Championship',
+    title: 'Jade Cargill vs. Rhea Ripley',
+    graphicLabel: 'Power vs. power with nothing to hide behind.',
+    hook: 'This is the collision of two alpha-level presences, where strength, aura, and division leadership all hit at once.',
+    story: 'Jade Cargill has carried herself like a defining champion, while Rhea Ripley fought through the Chamber path to earn the right to challenge her. On paper it is simple, but that simplicity is what makes it big: two women who look like centerpieces, both convinced the division should orbit them.',
+    whyNow: 'WrestleMania is the exact place for an attraction like this because it turns championship stakes into a statement about hierarchy. Jade wants to prove her reign is the future. Rhea wants to show that earning the shot the hard way means more than aura alone.',
+    stakes: [
+      'The WWE Women’s Championship',
+      'Division leadership between two physically dominant stars',
+      'Proof of whether earned momentum beats reigning force'
+    ],
+    meta: ['Champion: Jade Cargill', 'Challenge path: Elimination Chamber winner'],
+    accent1: '#f59e0b',
+    accent2: '#ff365f'
+  },
+  {
+    id: 'womens-world',
+    tag: 'Women’s World Title',
+    belt: 'Women’s World Championship',
+    title: 'Stephanie Vaquer vs. Liv Morgan',
+    graphicLabel: 'Rumble glory meets champion’s defiance.',
+    hook: 'Liv Morgan earned the WrestleMania shot, but Stephanie Vaquer made sure the road to the title stayed tense, personal, and loaded with doubt.',
+    story: 'Liv Morgan punched her ticket by winning the Women’s Royal Rumble, instantly becoming one of the central figures of WrestleMania season. Stephanie Vaquer, meanwhile, carried the champion’s posture of someone who refuses to let a signature moment for the challenger turn into a coronation.',
+    whyNow: 'Liv’s journey says she earned this through survival and timing. Stephanie’s response says earning a shot is not the same as being ready to take the title. WrestleMania forces both ideas into the same ring.',
+    stakes: [
+      'The Women’s World Championship',
+      'Liv’s chance to cash in the biggest win of her year',
+      'Stephanie’s chance to define her reign by shutting down a Rumble winner'
+    ],
+    meta: ['Champion: Stephanie Vaquer', 'Challenge path: Women’s Royal Rumble winner'],
+    accent1: '#ec4899',
+    accent2: '#3b82f6'
+  },
+  {
+    id: 'brock-oba',
+    tag: 'Special Attraction',
+    belt: 'Collision Course',
+    title: 'Brock Lesnar vs. Oba Femi',
+    graphicLabel: 'The old monster meets the new one.',
+    hook: 'Lesnar wanted a statement opponent. Oba answered by dropping him and making the challenge feel real in seconds.',
+    story: 'The story is brutally efficient: Brock Lesnar issued the challenge, and Oba Femi answered it with no fear and no hesitation. By planting Brock with Fall From Grace and standing over him, Oba turned what could have been a novelty attraction into a genuine threat assessment.',
+    whyNow: 'WrestleMania is where WWE can ask the biggest question possible: is Brock still the measuring stick for destruction, or has a new monster arrived who can physically shove the legend aside and claim the spotlight in one night?',
+    stakes: [
+      'A potential passing-of-the-torch moment in raw physical dominance',
+      'Oba’s chance to become an instant main-roster force',
+      'Brock’s chance to remind everyone that one ambush is not the same as beating him'
+    ],
+    meta: ['Instigator: Brock’s open challenge', 'Turning point: Fall From Grace'],
+    accent1: '#f97316',
+    accent2: '#94a3b8'
+  },
+  {
+    id: 'unsanctioned',
+    tag: 'Unsanctioned',
+    belt: 'Personal Vengeance',
+    title: 'Jacob Fatu vs. Drew McIntyre',
+    graphicLabel: 'So violent the company won’t own it.',
+    hook: 'This stopped being a normal feud the moment ambushes, revenge, and all-out brawls pushed WWE to wash its hands of the fight.',
+    story: 'Jacob Fatu and Drew McIntyre dragged each other into a rivalry where retaliation replaced strategy. Interference, payback, and escalating violence kept raising the emotional cost of every encounter until the conflict felt too reckless for standard rules to contain.',
+    whyNow: 'An unsanctioned label fits because the issue is no longer about rankings or titles. It is about punishment. WrestleMania becomes the place where both men can stop pretending this is a sporting contest and admit it is a violent attempt to end a grudge.',
+    stakes: [
+      'Pride, revenge, and reputational damage rather than a championship',
+      'Which man can survive the ugliest fight on the card',
+      'Whether Drew or Fatu leaves WrestleMania looking impossible to control'
+    ],
+    meta: ['Theme: Revenge over rules', 'Stipulation: WWE is not responsible'],
+    accent1: '#dc2626',
+    accent2: '#f97316'
+  },
+  {
+    id: 'womens-tag',
+    tag: 'Fatal Four Way',
+    belt: 'WWE Women’s Tag Team Championship',
+    title: 'The Irresistible Forces vs. Charlexa vs. Bayley & Lyra Valkyria vs. The Bella Twins',
+    graphicLabel: 'Four teams, one title, zero trust.',
+    hook: 'Dominant champions, uneasy alliances, and returning star power turn the women’s tag division into a WrestleMania traffic jam.',
+    story: 'The reigning champions came in with brute force and swagger, but the challengers all bring different danger. Charlotte and Alexa bring star power and unpredictability, Bayley and Lyra bring chemistry and veteran poise, and the Bella Twins bring legacy and crowd energy that can instantly swing a WrestleMania match.',
+    whyNow: 'Fatal four-way title matches are less about perfect teamwork and more about who can survive the confusion better than everyone else. That makes this a division snapshot: every team sees WrestleMania as the moment to seize control before the landscape shifts again.',
+    stakes: [
+      'The WWE Women’s Tag Team Championship',
+      'A division-defining win in the most chaotic tag match on the weekend',
+      'Momentum for whichever partnership can prove it is more than a temporary alliance'
+    ],
+    meta: ['Champions: The Irresistible Forces', 'Dynamic: alliances can break instantly'],
+    accent1: '#a855f7',
+    accent2: '#f59e0b'
+  },
+  {
+    id: 'gunther-rollins',
+    tag: 'Dream Match',
+    belt: 'Elite Collision',
+    title: 'Gunther vs. Seth Rollins',
+    graphicLabel: 'Precision cruelty meets restless genius.',
+    hook: 'A late-breaking WrestleMania collision between two elite operators who each think they define high-end wrestling.',
+    story: 'Gunther’s return and immediate attack on Seth Rollins gave this match instant credibility. There is no need for cartoon heat here; both men already carry the presence of top-level threat. One suffocates opponents with control and punishment. The other turns chaos, stamina, and instinct into high-end offense.',
+    whyNow: 'Because the matchup itself feels like an event. WrestleMania is where WWE can place two world-class performers in a ring and let the tension come from style, legacy, and professional disdain rather than a long melodramatic backstory.',
+    stakes: [
+      'A statement win between two men who each think they define elite wrestling',
+      'Momentum for the next wave of main-event positioning',
+      'Proof of whether control or creativity wins when both are world class'
+    ],
+    meta: ['Spark: Gunther’s return attack', 'Theme: Standard-bearer vs. standard-bearer'],
+    accent1: '#f59e0b',
+    accent2: '#ef4444'
+  },
+  {
+    id: 'balor-dominik',
+    tag: 'Grudge Match',
+    belt: 'Judgment Day Fallout',
+    title: '“The Demon” Finn Bálor vs. “Dirty” Dominik Mysterio',
+    graphicLabel: 'Family fractured. Faction fractured. No hiding left.',
+    hook: 'Judgment Day betrayal finally explodes when Finn turns full demon against the man who helped shove him out of the group.',
+    story: 'The relationship broke down after Finn’s title obsession and the group’s internal distrust pushed Judgment Day to a breaking point. Dominik survived the split on one side of the fallout, while Finn carried the humiliation and rage of being forced out of the faction he helped define.',
+    whyNow: 'Finn challenging Dominik at WrestleMania turns faction politics into something personal and theatrical. Bringing back The Demon raises the emotional temperature even more: this is not Finn trying to win an argument, it is Finn trying to haunt the man who represents the group moving on without him.',
+    stakes: [
+      'Personal revenge after one of the most dramatic faction fractures in WWE',
+      'Dominik proving he can survive without hiding behind the group',
+      'Finn proving exile did not weaken him, it weaponized him'
+    ],
+    meta: ['Theme: Judgment Day betrayal', 'Persona: The Demon returns'],
+    accent1: '#22c55e',
+    accent2: '#8b5cf6'
+  }
+];
+
+const matchStoriesContainer = document.getElementById('matchStories');
+let activeStoryId = null;
+
+const renderMatchStories = () => {
+  matchStoriesContainer.innerHTML = matchStories.map((match) => {
+    const metaTags = match.meta.map((item) => `<span>${item}</span>`).join('');
+    const stakes = match.stakes.map((item) => `<li>${item}</li>`).join('');
+    const imageStyle = match.image
+      ? `background-image: linear-gradient(160deg, rgba(0,0,0,0.18), rgba(0,0,0,0.78)), radial-gradient(circle at top right, ${match.accent2}, transparent 48%), radial-gradient(circle at bottom left, ${match.accent1}, transparent 52%), url('${match.image}');`
+      : '';
+
+    return `
+      <article class="story-card reveal ${match.featured ? 'featured' : ''}" style="--accent-1:${match.accent1}; --accent-2:${match.accent2};" data-story-card="${match.id}">
+        <button
+          class="story-card-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="story-panel-${match.id}"
+          data-story-toggle="${match.id}"
+        >
+          <div class="story-graphic" style="${imageStyle}">
+            <div class="story-chip-row">
+              <span class="story-chip">${match.tag}</span>
+              <span class="story-chip gold">${match.belt}</span>
+            </div>
+            <div class="story-graphic-copy">
+              <p>${match.graphicLabel}</p>
+              <h3>${match.belt}</h3>
+              <div class="story-combatants">${match.title.replaceAll(' vs. ', ' <span>vs</span> ')}</div>
+            </div>
+          </div>
+          <div class="story-card-body">
+            <div>
+              <strong style="display:block; color:#ffb4c2; margin-bottom:10px; font-size:0.76rem; letter-spacing:0.18em; text-transform:uppercase;">Story mode</strong>
+              <h4>${match.title}</h4>
+            </div>
+            <p class="story-hook">${match.hook}</p>
+            <div class="story-card-footer">
+              <strong class="story-toggle-label">Read story</strong>
+              <span class="story-chevron">⌄</span>
+            </div>
+          </div>
+        </button>
+        <div class="story-panel" id="story-panel-${match.id}" hidden>
+          <div class="story-divider"></div>
+          <div class="story-copy-grid">
+            <section class="story-block">
+              <h5>Story So Far</h5>
+              <p>${match.story}</p>
+            </section>
+            <section class="story-block">
+              <h5>Why This Match Is Happening Now</h5>
+              <p>${match.whyNow}</p>
+            </section>
+            <section class="story-block">
+              <h5>What’s At Stake</h5>
+              <ul class="story-stakes">${stakes}</ul>
+            </section>
+            <div class="story-meta">${metaTags}</div>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join('');
+
+  bindReveals(matchStoriesContainer);
+};
+
+const syncStoryCards = () => {
+  matchStoriesContainer.querySelectorAll('[data-story-card]').forEach((card) => {
+    const storyId = card.dataset.storyCard;
+    const isOpen = activeStoryId === storyId;
+    const toggle = card.querySelector('[data-story-toggle]');
+    const panel = card.querySelector('.story-panel');
+    const label = card.querySelector('.story-toggle-label');
+
+    card.classList.toggle('is-open', isOpen);
+    toggle.setAttribute('aria-expanded', String(isOpen));
+    panel.hidden = !isOpen;
+    label.textContent = isOpen ? 'Hide story' : 'Read story';
+  });
+};
+
+matchStoriesContainer.addEventListener('click', (event) => {
+  const toggle = event.target.closest('[data-story-toggle]');
+
+  if (!toggle) {
+    return;
+  }
+
+  const { storyToggle } = toggle.dataset;
+  activeStoryId = activeStoryId === storyToggle ? null : storyToggle;
+  syncStoryCards();
+});
+
+renderMatchStories();
+syncStoryCards();
+bindReveals();
+
+const curseTrigger = document.getElementById('curseTrigger');
+const curseCallout = document.getElementById('curseCallout');
+const curseAudio = document.getElementById('curseAudio');
+let curseTimeoutId = null;
+
+curseTrigger.addEventListener('click', () => {
+  curseCallout.classList.add('is-active');
+
+  if (curseAudio) {
+    curseAudio.currentTime = 0;
+    curseAudio.play().catch(() => {});
+  }
+
+  if (curseTimeoutId) {
+    clearTimeout(curseTimeoutId);
+  }
+
+  curseTimeoutId = setTimeout(() => {
+    curseCallout.classList.remove('is-active');
+  }, 2200);
+});

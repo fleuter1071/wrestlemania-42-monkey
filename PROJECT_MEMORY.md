@@ -27,3 +27,17 @@
 - Key learnings that you can bring with you to future sessions: For static promo pages, content-heavy sections become much easier to evolve when the content is centralized in a structured data model; QA on web features must include asset-tracking checks, not just code review, because production can break even when the UI logic is correct.
 - Remaining TODOs: Run a visual QA pass on desktop and mobile for the story cards and Danhausen panel; decide whether the top-nav `Experience` label should be renamed now that it points to the Danhausen section; optionally create custom match artwork for more cards.
 - Next steps: Validate the live GitHub page behavior in-browser, then refine polish items like card spacing, default-open state for featured matches, and stronger per-match visual differentiation.
+
+## 2026-04-09 21:23 America/New_York
+
+- Feature name: Static page architecture refactor
+- Work name: Split single-file page into dedicated HTML, CSS, and JavaScript files
+- Description: Extracted the large inline stylesheet and script from `index.html` into `styles.css` and `script.js`, then updated repo docs to match the new layout and current feature set.
+- Value provided: The site stays fully static and simple to run, but the code is easier to edit safely because structure, styling, and behavior now have clearer boundaries.
+- Files changed: `index.html`, `styles.css`, `script.js`, `README.md`, `PROJECT_MEMORY.md`
+- Technical architecture changes or key technical decisions made: Chose the lowest-risk refactor path by preserving the same DOM structure, asset paths, and runtime behavior while introducing file-level separation; kept the no-build architecture intact instead of adding tooling.
+- Assumptions: A three-file split is enough structure for the current project size and does not yet require templating, modules, or a bundler.
+- Known limitations: `script.js` still contains both match-story content data and interaction logic; generated story cards still use a small inline style attribute for dynamic accent colors and optional background images.
+- Key learnings that you can bring with you to future sessions: For static microsites, the first worthwhile architecture step is usually file separation rather than framework adoption because it reduces editing risk without increasing operational complexity.
+- Remaining TODOs: Run a browser QA pass to confirm the extracted files load correctly on desktop and mobile; consider separating match data from interaction logic if the roster keeps growing; add social metadata.
+- Next steps: Verify the site visually in a browser, then decide whether the next maintainability step is data extraction or more content and visual polish.
