@@ -415,11 +415,18 @@ syncStoryCards();
 bindReveals();
 
 const curseTrigger = document.getElementById('curseTrigger');
+const curseBats = document.getElementById('curseBats');
 const curseCallout = document.getElementById('curseCallout');
 const curseAudio = document.getElementById('curseAudio');
 let curseTimeoutId = null;
 
 curseTrigger.addEventListener('click', () => {
+  if (curseBats) {
+    curseBats.classList.remove('is-active');
+    void curseBats.offsetWidth;
+    curseBats.classList.add('is-active');
+  }
+
   curseCallout.classList.add('is-active');
 
   if (curseAudio) {
@@ -432,6 +439,10 @@ curseTrigger.addEventListener('click', () => {
   }
 
   curseTimeoutId = setTimeout(() => {
+    if (curseBats) {
+      curseBats.classList.remove('is-active');
+    }
+
     curseCallout.classList.remove('is-active');
   }, 2200);
 });

@@ -666,10 +666,12 @@ h1 {
   justify-content: center;
   align-items: end;
   min-height: 320px;
+  isolation: isolate;
 }
 
 .curse-trigger {
   position: relative;
+  z-index: 2;
   display: inline-flex;
   align-items: end;
   justify-content: center;
@@ -698,6 +700,156 @@ h1 {
   outline: 3px solid rgba(255,255,255,0.3);
   outline-offset: 6px;
   border-radius: 24px;
+}
+
+.curse-bats {
+  position: absolute;
+  inset: -18px;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 1;
+}
+
+.curse-bats.is-active {
+  opacity: 1;
+}
+
+.curse-bat {
+  --start-angle: 0deg;
+  --radius: 132px;
+  --scale: 1;
+  --duration: 1600ms;
+  --delay: 0ms;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 42px;
+  height: 24px;
+  margin: -12px 0 0 -21px;
+  opacity: 0;
+  transform-origin: center center;
+}
+
+.curse-bat::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #101010, #050505);
+  clip-path: polygon(
+    0% 54%,
+    9% 44%,
+    18% 35%,
+    29% 25%,
+    39% 33%,
+    46% 12%,
+    50% 0%,
+    54% 12%,
+    61% 33%,
+    71% 25%,
+    82% 35%,
+    91% 44%,
+    100% 54%,
+    88% 58%,
+    80% 66%,
+    73% 73%,
+    66% 67%,
+    58% 73%,
+    50% 100%,
+    42% 73%,
+    34% 67%,
+    27% 73%,
+    20% 66%,
+    12% 58%
+  );
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.25));
+  transform-origin: center center;
+}
+
+.curse-bats.is-active .curse-bat {
+  animation: bat-orbit var(--duration) linear var(--delay) forwards;
+}
+
+.curse-bats.is-active .curse-bat::before {
+  animation: bat-flap 180ms ease-in-out var(--delay) 10 alternate;
+}
+
+.bat-1 {
+  --start-angle: 0deg;
+  --radius: 136px;
+  --scale: 1;
+  --duration: 1500ms;
+  --delay: 0ms;
+}
+
+.bat-2 {
+  --start-angle: 58deg;
+  --radius: 126px;
+  --scale: 0.92;
+  --duration: 1640ms;
+  --delay: 90ms;
+}
+
+.bat-3 {
+  --start-angle: 122deg;
+  --radius: 142px;
+  --scale: 1.08;
+  --duration: 1720ms;
+  --delay: 40ms;
+}
+
+.bat-4 {
+  --start-angle: 196deg;
+  --radius: 118px;
+  --scale: 0.86;
+  --duration: 1460ms;
+  --delay: 140ms;
+}
+
+.bat-5 {
+  --start-angle: 248deg;
+  --radius: 130px;
+  --scale: 0.96;
+  --duration: 1680ms;
+  --delay: 70ms;
+}
+
+.bat-6 {
+  --start-angle: 312deg;
+  --radius: 144px;
+  --scale: 1.12;
+  --duration: 1580ms;
+  --delay: 120ms;
+}
+
+@keyframes bat-orbit {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--start-angle)) translateX(calc(var(--radius) * 0.66)) scale(0.3);
+  }
+
+  18% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 1;
+    transform: rotate(calc(var(--start-angle) + 180deg)) translateX(var(--radius)) scale(var(--scale));
+  }
+
+  100% {
+    opacity: 0;
+    transform: rotate(calc(var(--start-angle) + 360deg)) translateX(calc(var(--radius) + 12px)) scale(calc(var(--scale) * 0.92));
+  }
+}
+
+@keyframes bat-flap {
+  from {
+    transform: scaleY(1) scaleX(1);
+  }
+
+  to {
+    transform: scaleY(0.82) scaleX(0.94);
+  }
 }
 
 .curse-callout {
@@ -810,6 +962,26 @@ h1 {
   .curse-figure {
     min-height: 280px;
   }
+
+  .curse-bat {
+    width: 34px;
+    height: 20px;
+    margin: -10px 0 0 -17px;
+  }
+
+  .bat-1,
+  .bat-2,
+  .bat-3,
+  .bat-4,
+  .bat-5,
+  .bat-6 {
+    --radius: 108px;
+  }
+
+  .bat-3,
+  .bat-6 {
+    --radius: 118px;
+  }
 }
 
 @media (max-width: 720px) {
@@ -880,5 +1052,35 @@ h1 {
     right: 0;
     max-width: 180px;
     font-size: 1.35rem;
+  }
+
+  .curse-bats {
+    inset: 0;
+  }
+
+  .bat-1,
+  .bat-2,
+  .bat-3,
+  .bat-4,
+  .bat-5,
+  .bat-6 {
+    --radius: 86px;
+  }
+
+  .bat-3,
+  .bat-6 {
+    --radius: 96px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .curse-bats.is-active .curse-bat,
+  .curse-bats.is-active .curse-bat::before,
+  .curse-bats.is-active .curse-bat::after {
+    animation: none;
+  }
+
+  .curse-bats.is-active .curse-bat {
+    opacity: 0.9;
   }
 }
