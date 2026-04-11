@@ -60,24 +60,6 @@ const matchStories = [
     accent2: '#ff365f'
   },
   {
-    id: 'celeb-tag',
-    tag: 'Tag Match',
-    belt: 'Celebrity Spotlight',
-    title: 'Danhausen & Jelly Roll vs. The Miz & Kit Wilson',
-    graphicLabel: 'Mockery, ego, and total chaos.',
-    hook: 'A celebrity feud, a cursed wildcard, and two self-promoters trying to embarrass each other under the brightest lights possible.',
-    story: 'Jelly Roll’s recent WWE story has run through Miz TV drama, taunts from Kit Wilson, and a growing sense that Miz wants to turn every spotlight into his own. Danhausen adds the unpredictable element: the strange disruptor who keeps orbiting this conflict with curses, comic timing, and just enough menace to make the heels uncomfortable.',
-    whyNow: 'The issue stopped being a one-off guest spot the moment Miz and Wilson kept escalating the disrespect. WrestleMania becomes the payoff: Jelly Roll gets to fight back on the biggest stage, while Danhausen gives the match the kind of chaos that makes a celebrity attraction feel dangerous instead of gimmicky.',
-    stakes: [
-      'Public humiliation for whoever loses the most entertainment-heavy match on the card',
-      'A WrestleMania moment for Jelly Roll that proves he belongs in the chaos',
-      'Another spotlight grab for Miz if he can spin the whole spectacle back in his favor'
-    ],
-    meta: ['Wild card: Danhausen', 'Heat source: Miz TV and Kit Wilson taunts'],
-    accent1: '#f97316',
-    accent2: '#ff365f'
-  },
-  {
     id: 'faction-showcase',
     tag: 'Faction Showcase',
     belt: 'Six-Man Spotlight',
