@@ -249,7 +249,6 @@ h1 {
 }
 
 .detail-box,
-.highlight-card,
 .match-card,
 .info-panel,
 .cta-panel {
@@ -282,30 +281,6 @@ h1 {
 
 .section {
   padding: 28px 0;
-}
-
-.highlights-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
-}
-
-.highlight-card {
-  padding: 24px;
-}
-
-.highlight-bar {
-  width: 48px;
-  height: 8px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--red-bright), #f97316);
-  margin-bottom: 18px;
-}
-
-.highlight-card p {
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.75;
 }
 
 .section-head {
@@ -940,7 +915,6 @@ h1 {
 @media (max-width: 980px) {
   .hero-grid,
   .bottom-grid,
-  .highlights-grid,
   .story-grid,
   .curse-panel {
     grid-template-columns: 1fr;
