@@ -341,9 +341,6 @@ const renderMatchStories = () => {
         </button>
         <div class="story-panel" id="story-panel-${match.id}" hidden>
           <div class="story-divider"></div>
-          <div class="story-panel-intro">
-            <strong class="story-panel-label">Full Story</strong>
-          </div>
           <div class="story-copy-grid">
             <section class="story-block">
               <h5>Story So Far</h5>
