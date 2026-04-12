@@ -416,7 +416,7 @@ const renderMatchStories = () => {
     const matchesForNight = matchStories.filter((match) => match.night === night.id);
 
     return `
-      <section class="match-night match-night-${night.modifier}">
+      <section class="match-night match-night-${night.modifier}" id="${night.id}">
         <div class="match-night-header reveal">
           <div>
             <div class="eyebrow">${night.label}</div>
