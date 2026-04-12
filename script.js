@@ -40,6 +40,7 @@ const matchStories = [
     accent1: '#ff365f',
     accent2: '#f59e0b',
     image: 'Assets/WM-42-IC-Ladder-Match.png',
+    imageMode: 'replace',
     featured: true
   },
   {
@@ -194,6 +195,8 @@ const matchStories = [
     meta: ['Champion: Cody Rhodes', 'April 3: Pat McAfee helped Orton attack Cody', 'Fan reaction: McAfee’s role drew notable backlash'],
     accent1: '#3b82f6',
     accent2: '#f59e0b',
+    image: 'Assets/Cody-Randy-head-to-head.png',
+    imageMode: 'replace',
     featured: true
   },
   {
@@ -213,7 +216,9 @@ const matchStories = [
     ],
     meta: ['Champion: Jade Cargill', 'Challenge path: Elimination Chamber winner'],
     accent1: '#f59e0b',
-    accent2: '#ff365f'
+    accent2: '#ff365f',
+    image: 'Assets/Jade-Ripley-head-to-head.png',
+    imageMode: 'replace'
   },
   {
     id: 'womens-world',
@@ -232,7 +237,9 @@ const matchStories = [
     ],
     meta: ['Champion: Stephanie Vaquer', 'Challenge path: Women’s Royal Rumble winner'],
     accent1: '#ec4899',
-    accent2: '#3b82f6'
+    accent2: '#3b82f6',
+    image: 'Assets/Liv-Stephanie-head-to-head.png',
+    imageMode: 'replace'
   },
   {
     id: 'brock-oba',
@@ -355,7 +362,9 @@ const renderStoryCard = (match) => {
   const metaTags = match.meta.map((item) => `<span>${item}</span>`).join('');
   const stakes = match.stakes.map((item) => `<li>${item}</li>`).join('');
   const imageStyle = match.image
-    ? `background-image: linear-gradient(160deg, rgba(0,0,0,0.18), rgba(0,0,0,0.78)), radial-gradient(circle at top right, ${match.accent2}, transparent 48%), radial-gradient(circle at bottom left, ${match.accent1}, transparent 52%), url('${match.image}');`
+    ? match.imageMode === 'replace'
+      ? `background-image: linear-gradient(160deg, rgba(0,0,0,0.28), rgba(0,0,0,0.82)), url('${match.image}');`
+      : `background-image: linear-gradient(160deg, rgba(0,0,0,0.18), rgba(0,0,0,0.78)), radial-gradient(circle at top right, ${match.accent2}, transparent 48%), radial-gradient(circle at bottom left, ${match.accent1}, transparent 52%), url('${match.image}');`
     : '';
 
   return `
