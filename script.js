@@ -323,15 +323,14 @@ const renderMatchStories = () => {
               <span class="story-chip gold">${match.belt}</span>
             </div>
             <div class="story-graphic-copy">
-              <p>${match.graphicLabel}</p>
-              <h3>${match.belt}</h3>
-              <div class="story-combatants">${match.title.replaceAll(' vs. ', ' <span>vs</span> ')}</div>
+              <p class="story-kicker">${match.graphicLabel}</p>
+              <h3>${match.title}</h3>
             </div>
           </div>
           <div class="story-card-body">
-            <div>
-              <strong style="display:block; color:#ffb4c2; margin-bottom:10px; font-size:0.76rem; letter-spacing:0.18em; text-transform:uppercase;">Story mode</strong>
-              <h4>${match.title}</h4>
+            <div class="story-card-body-top">
+              <strong class="story-summary-label">${match.belt}</strong>
+              ${match.featured ? '<span class="story-feature-flag">Featured</span>' : ''}
             </div>
             <p class="story-hook">${match.hook}</p>
             <div class="story-card-footer">
@@ -342,6 +341,9 @@ const renderMatchStories = () => {
         </button>
         <div class="story-panel" id="story-panel-${match.id}" hidden>
           <div class="story-divider"></div>
+          <div class="story-panel-intro">
+            <strong class="story-panel-label">Full Story</strong>
+          </div>
           <div class="story-copy-grid">
             <section class="story-block">
               <h5>Story So Far</h5>
