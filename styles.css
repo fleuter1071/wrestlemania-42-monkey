@@ -334,6 +334,79 @@ h1 {
   gap: 20px;
 }
 
+#matchStories {
+  display: grid;
+  gap: 36px;
+}
+
+.match-night {
+  position: relative;
+  display: grid;
+  gap: 32px;
+  padding: 36px;
+  border-radius: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015)),
+    rgba(255, 255, 255, 0.02);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.32);
+}
+
+.match-night::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0.58;
+  background:
+    linear-gradient(120deg, rgba(5,5,5,0.2), rgba(5,5,5,0.64)),
+    var(--night-image);
+  background-size: cover;
+  background-position: center;
+}
+
+.match-night > * {
+  position: relative;
+  z-index: 1;
+}
+
+.match-night-night-one {
+  --night-image: url('Assets/WM-42-NightOne-BG.png');
+}
+
+.match-night-night-two {
+  --night-image: url('Assets/WM-42-NightTwo-BG.png');
+}
+
+.match-night-header {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  align-items: start;
+  max-width: 760px;
+}
+
+.match-night-header h3 {
+  margin: 12px 0 0;
+  font-family: "Barlow Condensed", Impact, sans-serif;
+  font-size: clamp(2rem, 3.8vw, 3.4rem);
+  line-height: 0.94;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.match-night-header p {
+  margin: 0;
+  max-width: 640px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.match-night .story-grid {
+  gap: 24px;
+}
+
 .story-card {
   position: relative;
   display: flex;
@@ -963,6 +1036,12 @@ h1 {
   transform: translateY(0);
 }
 
+@media (max-width: 1120px) {
+  .match-night .story-card.featured {
+    grid-column: span 1;
+  }
+}
+
 @media (max-width: 980px) {
   .hero-grid,
   .bottom-grid,
@@ -990,6 +1069,11 @@ h1 {
 
   .story-copy-grid {
     grid-template-columns: 1fr;
+  }
+
+  .match-night-header {
+    grid-template-columns: 1fr;
+    align-items: start;
   }
 
   .curse-figure {
@@ -1089,6 +1173,16 @@ h1 {
 
   .story-graphic-copy h3 {
     font-size: clamp(1.75rem, 9vw, 2.35rem);
+  }
+
+  .match-night {
+    padding: 24px;
+    gap: 20px;
+    border-radius: 26px;
+  }
+
+  #matchStories {
+    gap: 28px;
   }
 
   .story-card-body,

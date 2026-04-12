@@ -23,6 +23,7 @@ const bindReveals = (root = document) => {
 const matchStories = [
   {
     id: 'ic-ladder',
+    night: 'night-two',
     tag: 'Ladder Match',
     belt: 'Intercontinental Championship',
     title: 'Penta vs. Rey Mysterio vs. Je’Von Evans vs. Rusev vs. Dragon Lee vs. JD McDonagh vs. El Grande Americano',
@@ -43,6 +44,7 @@ const matchStories = [
   },
   {
     id: 'iyo-asuka',
+    night: 'night-two',
     tag: 'Singles Match',
     belt: 'Personal Rivalry',
     title: 'Iyo Sky vs. Asuka',
@@ -61,6 +63,7 @@ const matchStories = [
   },
   {
     id: 'danhausen-miz',
+    night: 'night-two',
     tag: 'Singles Match',
     belt: 'Cursed Grudge',
     title: 'Danhausen vs. The Miz',
@@ -79,6 +82,7 @@ const matchStories = [
   },
   {
     id: 'faction-showcase',
+    night: 'night-one',
     tag: 'Faction Showcase',
     belt: 'Six-Man Spotlight',
     title: 'The Usos & LA Knight vs. The Vision & IShowSpeed',
@@ -97,6 +101,7 @@ const matchStories = [
   },
   {
     id: 'womens-us',
+    night: 'night-two',
     tag: 'Championship Match',
     belt: 'Women’s United States Championship',
     title: 'Giulia vs. Tiffany Stratton',
@@ -115,6 +120,7 @@ const matchStories = [
   },
   {
     id: 'us-triple-threat',
+    night: 'night-one',
     tag: 'Triple Threat',
     belt: 'United States Championship',
     title: 'Sami Zayn vs. Trick Williams vs. Carmelo Hayes',
@@ -133,6 +139,7 @@ const matchStories = [
   },
   {
     id: 'womens-ic',
+    night: 'night-one',
     tag: 'No Holds Barred',
     belt: 'Women’s Intercontinental Championship',
     title: 'AJ Lee vs. Becky Lynch',
@@ -151,6 +158,7 @@ const matchStories = [
   },
   {
     id: 'world-heavyweight',
+    night: 'night-two',
     tag: 'World Title Match',
     belt: 'World Heavyweight Championship',
     title: 'CM Punk vs. Roman Reigns',
@@ -170,6 +178,7 @@ const matchStories = [
   },
   {
     id: 'undisputed',
+    night: 'night-one',
     tag: 'Main Event',
     belt: 'WWE Undisputed Championship',
     title: 'Cody Rhodes vs. Randy Orton',
@@ -189,6 +198,7 @@ const matchStories = [
   },
   {
     id: 'wwe-womens',
+    night: 'night-two',
     tag: 'Women’s Title Match',
     belt: 'WWE Women’s Championship',
     title: 'Jade Cargill vs. Rhea Ripley',
@@ -207,6 +217,7 @@ const matchStories = [
   },
   {
     id: 'womens-world',
+    night: 'night-one',
     tag: 'Women’s World Title',
     belt: 'Women’s World Championship',
     title: 'Stephanie Vaquer vs. Liv Morgan',
@@ -225,6 +236,7 @@ const matchStories = [
   },
   {
     id: 'brock-oba',
+    night: 'night-two',
     tag: 'Special Attraction',
     belt: 'Collision Course',
     title: 'Brock Lesnar vs. Oba Femi',
@@ -243,6 +255,7 @@ const matchStories = [
   },
   {
     id: 'unsanctioned',
+    night: 'night-one',
     tag: 'Unsanctioned',
     belt: 'Personal Vengeance',
     title: 'Jacob Fatu vs. Drew McIntyre',
@@ -261,6 +274,7 @@ const matchStories = [
   },
   {
     id: 'womens-tag',
+    night: 'night-one',
     tag: 'Fatal Four Way',
     belt: 'WWE Women’s Tag Team Championship',
     title: 'The Irresistible Forces vs. Charlexa vs. Bayley & Lyra Valkyria vs. The Bella Twins',
@@ -279,6 +293,7 @@ const matchStories = [
   },
   {
     id: 'gunther-rollins',
+    night: 'night-one',
     tag: 'Dream Match',
     belt: 'Elite Collision',
     title: 'Gunther vs. Seth Rollins',
@@ -297,6 +312,7 @@ const matchStories = [
   },
   {
     id: 'balor-dominik',
+    night: 'night-two',
     tag: 'Grudge Match',
     belt: 'Judgment Day Fallout',
     title: '“The Demon” Finn Bálor vs. “Dirty” Dominik Mysterio',
@@ -318,64 +334,100 @@ const matchStories = [
 const matchStoriesContainer = document.getElementById('matchStories');
 let activeStoryId = null;
 
-const renderMatchStories = () => {
-  matchStoriesContainer.innerHTML = matchStories.map((match) => {
-    const metaTags = match.meta.map((item) => `<span>${item}</span>`).join('');
-    const stakes = match.stakes.map((item) => `<li>${item}</li>`).join('');
-    const imageStyle = match.image
-      ? `background-image: linear-gradient(160deg, rgba(0,0,0,0.18), rgba(0,0,0,0.78)), radial-gradient(circle at top right, ${match.accent2}, transparent 48%), radial-gradient(circle at bottom left, ${match.accent1}, transparent 52%), url('${match.image}');`
-      : '';
+const matchNightConfigs = [
+  {
+    id: 'night-one',
+    label: 'Night One',
+    title: 'Saturday Spotlight',
+    description: 'The officially announced Saturday card is anchored by Cody Rhodes vs. Randy Orton, with Gunther vs. Seth Rollins, Drew McIntyre vs. Jacob Fatu, and the women’s tag-title chaos filling out a louder first-night mix.',
+    modifier: 'night-one'
+  },
+  {
+    id: 'night-two',
+    label: 'Night Two',
+    title: 'Sunday Fallout',
+    description: 'Sunday is officially built around CM Punk vs. Roman Reigns, Brock Lesnar vs. Oba Femi, the Intercontinental Title ladder match, and the rest of the title-heavy close to the weekend.',
+    modifier: 'night-two'
+  }
+];
 
-    return `
-      <article class="story-card reveal ${match.featured ? 'featured' : ''}" style="--accent-1:${match.accent1}; --accent-2:${match.accent2};" data-story-card="${match.id}">
-        <button
-          class="story-card-toggle"
-          type="button"
-          aria-expanded="false"
-          aria-controls="story-panel-${match.id}"
-          data-story-toggle="${match.id}"
-        >
-          <div class="story-graphic" style="${imageStyle}">
-            <div class="story-chip-row">
-              <span class="story-chip">${match.tag}</span>
-              <span class="story-chip gold">${match.belt}</span>
-            </div>
-            <div class="story-graphic-copy">
-              <p class="story-kicker">${match.graphicLabel}</p>
-              <h3>${match.title}</h3>
-            </div>
+const renderStoryCard = (match) => {
+  const metaTags = match.meta.map((item) => `<span>${item}</span>`).join('');
+  const stakes = match.stakes.map((item) => `<li>${item}</li>`).join('');
+  const imageStyle = match.image
+    ? `background-image: linear-gradient(160deg, rgba(0,0,0,0.18), rgba(0,0,0,0.78)), radial-gradient(circle at top right, ${match.accent2}, transparent 48%), radial-gradient(circle at bottom left, ${match.accent1}, transparent 52%), url('${match.image}');`
+    : '';
+
+  return `
+    <article class="story-card reveal ${match.featured ? 'featured' : ''}" style="--accent-1:${match.accent1}; --accent-2:${match.accent2};" data-story-card="${match.id}">
+      <button
+        class="story-card-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="story-panel-${match.id}"
+        data-story-toggle="${match.id}"
+      >
+        <div class="story-graphic" style="${imageStyle}">
+          <div class="story-chip-row">
+            <span class="story-chip">${match.tag}</span>
+            <span class="story-chip gold">${match.belt}</span>
           </div>
-          <div class="story-card-body">
-            <div class="story-card-body-top">
-              <strong class="story-summary-label">${match.belt}</strong>
-              ${match.featured ? '<span class="story-feature-flag">Featured</span>' : ''}
-            </div>
-            <p class="story-hook">${match.hook}</p>
-            <div class="story-card-footer">
-              <strong class="story-toggle-label">Read story</strong>
-              <span class="story-chevron">⌄</span>
-            </div>
-          </div>
-        </button>
-        <div class="story-panel" id="story-panel-${match.id}" hidden>
-          <div class="story-divider"></div>
-          <div class="story-copy-grid">
-            <section class="story-block">
-              <h5>Story So Far</h5>
-              <p>${match.story}</p>
-            </section>
-            <section class="story-block">
-              <h5>Why This Match Is Happening Now</h5>
-              <p>${match.whyNow}</p>
-            </section>
-            <section class="story-block">
-              <h5>What’s At Stake</h5>
-              <ul class="story-stakes">${stakes}</ul>
-            </section>
-            <div class="story-meta">${metaTags}</div>
+          <div class="story-graphic-copy">
+            <p class="story-kicker">${match.graphicLabel}</p>
+            <h3>${match.title}</h3>
           </div>
         </div>
-      </article>
+        <div class="story-card-body">
+          <div class="story-card-body-top">
+            <strong class="story-summary-label">${match.belt}</strong>
+            ${match.featured ? '<span class="story-feature-flag">Featured</span>' : ''}
+          </div>
+          <p class="story-hook">${match.hook}</p>
+          <div class="story-card-footer">
+            <strong class="story-toggle-label">Read story</strong>
+            <span class="story-chevron">⌄</span>
+          </div>
+        </div>
+      </button>
+      <div class="story-panel" id="story-panel-${match.id}" hidden>
+        <div class="story-divider"></div>
+        <div class="story-copy-grid">
+          <section class="story-block">
+            <h5>Story So Far</h5>
+            <p>${match.story}</p>
+          </section>
+          <section class="story-block">
+            <h5>Why This Match Is Happening Now</h5>
+            <p>${match.whyNow}</p>
+          </section>
+          <section class="story-block">
+            <h5>What’s At Stake</h5>
+            <ul class="story-stakes">${stakes}</ul>
+          </section>
+          <div class="story-meta">${metaTags}</div>
+        </div>
+      </div>
+    </article>
+  `;
+};
+
+const renderMatchStories = () => {
+  matchStoriesContainer.innerHTML = matchNightConfigs.map((night) => {
+    const matchesForNight = matchStories.filter((match) => match.night === night.id);
+
+    return `
+      <section class="match-night match-night-${night.modifier}">
+        <div class="match-night-header reveal">
+          <div>
+            <div class="eyebrow">${night.label}</div>
+            <h3>${night.title}</h3>
+          </div>
+          <p>${night.description}</p>
+        </div>
+        <div class="story-grid" aria-label="${night.label} match stories">
+          ${matchesForNight.map((match) => renderStoryCard(match)).join('')}
+        </div>
+      </section>
     `;
   }).join('');
 
