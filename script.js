@@ -41,6 +41,8 @@ const matchStories = [
     accent2: '#f59e0b',
     image: 'Assets/WM-42-IC-Ladder-Match.png',
     imageMode: 'replace',
+    imagePosition: 'center center',
+    imagePositionMobile: '50% 38%',
     featured: true
   },
   {
@@ -197,6 +199,8 @@ const matchStories = [
     accent2: '#f59e0b',
     image: 'Assets/Cody-Randy-head-to-head.png',
     imageMode: 'replace',
+    imagePosition: 'center center',
+    imagePositionMobile: '54% 34%',
     featured: true
   },
   {
@@ -218,7 +222,9 @@ const matchStories = [
     accent1: '#f59e0b',
     accent2: '#ff365f',
     image: 'Assets/Jade-Ripley-head-to-head.png',
-    imageMode: 'replace'
+    imageMode: 'replace',
+    imagePosition: 'center center',
+    imagePositionMobile: '50% 26%'
   },
   {
     id: 'womens-world',
@@ -239,7 +245,9 @@ const matchStories = [
     accent1: '#ec4899',
     accent2: '#3b82f6',
     image: 'Assets/Liv-Stephanie-head-to-head.png',
-    imageMode: 'replace'
+    imageMode: 'replace',
+    imagePosition: 'center center',
+    imagePositionMobile: '52% 28%'
   },
   {
     id: 'brock-oba',
@@ -361,6 +369,12 @@ const matchNightConfigs = [
 const renderStoryCard = (match) => {
   const metaTags = match.meta.map((item) => `<span>${item}</span>`).join('');
   const stakes = match.stakes.map((item) => `<li>${item}</li>`).join('');
+  const cardStyle = [
+    `--accent-1:${match.accent1};`,
+    `--accent-2:${match.accent2};`,
+    match.imagePosition ? `--graphic-position:${match.imagePosition};` : '',
+    match.imagePositionMobile ? `--graphic-position-mobile:${match.imagePositionMobile};` : ''
+  ].filter(Boolean).join(' ');
   const imageStyle = match.image
     ? match.imageMode === 'replace'
       ? `background-image: linear-gradient(160deg, rgba(0,0,0,0.28), rgba(0,0,0,0.82)), url('${match.image}');`
@@ -368,7 +382,7 @@ const renderStoryCard = (match) => {
     : '';
 
   return `
-    <article class="story-card reveal ${match.featured ? 'featured' : ''}" style="--accent-1:${match.accent1}; --accent-2:${match.accent2};" data-story-card="${match.id}">
+    <article class="story-card reveal ${match.featured ? 'featured' : ''}" style="${cardStyle}" data-story-card="${match.id}">
       <button
         class="story-card-toggle"
         type="button"

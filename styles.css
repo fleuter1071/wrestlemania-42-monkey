@@ -459,7 +459,7 @@ h1 {
     radial-gradient(circle at bottom left, var(--accent-1, rgba(255,54,95,0.55)), transparent 52%),
     var(--bg-elevated);
   background-size: cover;
-  background-position: center;
+  background-position: var(--graphic-position, center);
   transition: transform 0.22s ease, filter 0.22s ease, min-height 0.22s ease;
 }
 
@@ -1159,6 +1159,7 @@ h1 {
   .story-graphic {
     min-height: 214px;
     padding: 18px;
+    background-position: var(--graphic-position-mobile, var(--graphic-position, center));
   }
 
   .story-graphic-copy {
