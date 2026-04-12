@@ -293,7 +293,11 @@ const matchStories = [
     ],
     meta: ['Theme: Revenge over rules', 'Stipulation: WWE is not responsible'],
     accent1: '#dc2626',
-    accent2: '#f97316'
+    accent2: '#f97316',
+    image: 'Assets/drew-fatu-head-to-head.png',
+    imageMode: 'replace',
+    imagePosition: 'center center',
+    imagePositionMobile: '50% 32%'
   },
   {
     id: 'womens-tag',
