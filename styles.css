@@ -1041,20 +1041,21 @@ h1 {
   }
 
   .nav {
-    width: 100%;
+    width: auto;
     flex: 1 1 auto;
     min-width: 0;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    justify-content: stretch;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
     overflow: hidden;
     padding-bottom: 0;
-    gap: 4px;
+    gap: 6px;
   }
 
   .nav a {
-    min-width: 0;
-    padding: 8px 4px;
+    flex: 0 0 auto;
+    min-width: 78px;
+    padding: 8px 10px;
     font-size: 0.76rem;
     text-align: center;
     border-radius: 12px;
