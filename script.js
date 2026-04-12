@@ -60,6 +60,24 @@ const matchStories = [
     accent2: '#ff365f'
   },
   {
+    id: 'danhausen-miz',
+    tag: 'Singles Match',
+    belt: 'Cursed Grudge',
+    title: 'Danhausen vs. The Miz',
+    graphicLabel: 'A-list ego meets very evil payback.',
+    hook: 'Weeks of curses, public humiliation, and Miz TV chaos turn one of SmackDown’s strangest feuds into a direct showdown.',
+    story: 'The issue grew out of repeated embarrassment for The Miz. WWE.com has framed Danhausen as a chaos agent who lurks backstage to deliver curses, and that energy landed directly on Miz when Danhausen cursed him on SmackDown in March. From there, Miz’s orbit only got messier: Jelly Roll accidentally punched him on “Miz TV,” Danhausen later offered to uncurse both Miz and Kit Wilson, and Danhausen eventually backed up the talk by beating Wilson in his in-ring debut.',
+    whyNow: 'The WrestleMania match-up is the logical payoff from that TV run. Miz has every reason to stop treating Danhausen like a nuisance and finally fight him directly, while Danhausen has enough momentum, crowd support, and mischief behind him to make a one-on-one match feel earned instead of random. This WrestleMania framing is an inference from the current WWE.com story beats rather than an officially announced match.',
+    stakes: [
+      'Miz trying to restore control after weeks of being cursed, mocked, and embarrassed on television',
+      'Danhausen proving he is more than a backstage attraction after winning his first SmackDown match',
+      'A crowd-pleasing WrestleMania moment built on whether A-list arrogance can survive very evil chaos'
+    ],
+    meta: ['Story beat: Danhausen cursed The Miz on SmackDown', 'Momentum: Danhausen beat Kit Wilson on April 10'],
+    accent1: '#f59e0b',
+    accent2: '#ff365f'
+  },
+  {
     id: 'faction-showcase',
     tag: 'Faction Showcase',
     belt: 'Six-Man Spotlight',
@@ -155,16 +173,16 @@ const matchStories = [
     tag: 'Main Event',
     belt: 'WWE Undisputed Championship',
     title: 'Cody Rhodes vs. Randy Orton',
-    graphicLabel: 'Legacy turns inward on the biggest stage.',
-    hook: 'Mentor versus protégé becomes champion versus challenger in a match built on trust, history, and the danger of knowing each other too well.',
-    story: 'Cody Rhodes stands at the center of the company, but Randy Orton knows exactly how dangerous that position can be because he helped shape Cody years ago. Their shared Legacy history gives this match an emotional gravity beyond the title: every promo and staredown carries a sense that Randy knows where Cody is vulnerable because he watched him become this version of himself.',
-    whyNow: 'Orton earned the opportunity and refuses to treat sentiment as protection. Cody had to reclaim the title path first, and now WrestleMania becomes the place where the student has to beat the master without pretending the bond between them still makes the fight safe.',
+    graphicLabel: 'Legacy, betrayal, and the Pat McAfee backlash.',
+    hook: 'What should have been a pure legacy main event is now tangled up in Pat McAfee’s interference and the fan blowback that came with it.',
+    story: 'The emotional core is still Cody Rhodes versus Randy Orton. Orton knows Cody better than almost anyone because he helped shape him during the Legacy era, and that history should have been enough to make this feel massive. But the texture of the feud changed on April 3, 2026, when Pat McAfee returned to SmackDown, aligned with Orton, and helped attack the Undisputed WWE Champion. WWE.com then leaned into the fallout by framing Cody’s response around both Orton and McAfee, which made McAfee a central part of the angle instead of a one-night surprise.',
+    whyNow: 'WrestleMania is now the payoff for two connected stories at once. The first is Cody versus Randy: champion against mentor, history against ambition, and the deepest personal issue on the card. The second is whether that story has been compromised by McAfee’s involvement. Outside coverage from WrestleZone, TPWW, and Cageside Seats shows a clear negative fan reaction to Pat becoming such a major part of the feud, with criticism centered on the idea that the Rhodes-Orton story was already strong enough on its own. That blowback is now part of the match’s reality, so the card should reflect both the heat of the angle and the frustration around how crowded it has become.',
     stakes: [
-      'The WWE Undisputed Championship in the match with the deepest shared history',
-      'Cody’s chance to defend his era against the man who helped shape it',
-      'Randy’s chance to turn mentorship into one more defining act of control'
+      'The WWE Undisputed Championship in the feud with the deepest personal history on the card',
+      'Cody trying to defend his reign while neutralizing both Orton and the disruption caused by Pat McAfee',
+      'Orton’s chance to turn a 20-year bond and a controversial new alliance into one more defining act of control'
     ],
-    meta: ['Champion: Cody Rhodes', 'Ringside factor: Pat McAfee'],
+    meta: ['Champion: Cody Rhodes', 'April 3: Pat McAfee helped Orton attack Cody', 'Fan reaction: McAfee’s role drew notable backlash'],
     accent1: '#3b82f6',
     accent2: '#f59e0b',
     featured: true
