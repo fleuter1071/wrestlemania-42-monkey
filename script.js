@@ -157,7 +157,11 @@ const matchStories = [
     ],
     meta: ['Champion: AJ Lee', 'Stipulation: No Holds Barred'],
     accent1: '#ef4444',
-    accent2: '#8b5cf6'
+    accent2: '#8b5cf6',
+    image: 'Assets/Becky-AJ-head-to-head.png',
+    imageMode: 'replace',
+    imagePosition: 'center center',
+    imagePositionMobile: '52% 32%'
   },
   {
     id: 'world-heavyweight',
@@ -177,6 +181,10 @@ const matchStories = [
     meta: ['Champion: CM Punk', 'Earned by: Roman’s Royal Rumble win'],
     accent1: '#ff365f',
     accent2: '#3b82f6',
+    image: 'Assets/Roman-Punk-head-to-head.png',
+    imageMode: 'replace',
+    imagePosition: 'center center',
+    imagePositionMobile: '50% 32%',
     featured: true
   },
   {
