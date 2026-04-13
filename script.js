@@ -100,7 +100,11 @@ const matchStories = [
     ],
     meta: ['Wild card: IShowSpeed', 'Theme: Attention vs. authenticity'],
     accent1: '#3b82f6',
-    accent2: '#f97316'
+    accent2: '#f97316',
+    image: 'Assets/Usos-VisionJ-head-to-head.png',
+    imageMode: 'replace',
+    imagePosition: 'center center',
+    imagePositionMobile: '50% 30%'
   },
   {
     id: 'womens-us',
@@ -316,7 +320,11 @@ const matchStories = [
     ],
     meta: ['Champions: The Irresistible Forces', 'Dynamic: alliances can break instantly'],
     accent1: '#a855f7',
-    accent2: '#f59e0b'
+    accent2: '#f59e0b',
+    image: 'Assets/womens-tag-team-head-to-head.png',
+    imageMode: 'replace',
+    imagePosition: 'center center',
+    imagePositionMobile: '50% 28%'
   },
   {
     id: 'gunther-rollins',
@@ -335,7 +343,11 @@ const matchStories = [
     ],
     meta: ['Spark: Gunther’s return attack', 'Theme: Standard-bearer vs. standard-bearer'],
     accent1: '#f59e0b',
-    accent2: '#ef4444'
+    accent2: '#ef4444',
+    image: 'Assets/Rollins-Gunther-head-to-head.png',
+    imageMode: 'replace',
+    imagePosition: 'center center',
+    imagePositionMobile: '50% 32%'
   },
   {
     id: 'balor-dominik',
