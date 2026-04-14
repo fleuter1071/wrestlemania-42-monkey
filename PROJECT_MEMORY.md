@@ -41,3 +41,115 @@
 - Key learnings that you can bring with you to future sessions: For static microsites, the first worthwhile architecture step is usually file separation rather than framework adoption because it reduces editing risk without increasing operational complexity.
 - Remaining TODOs: Run a browser QA pass to confirm the extracted files load correctly on desktop and mobile; consider separating match data from interaction logic if the roster keeps growing; add social metadata.
 - Next steps: Verify the site visually in a browser, then decide whether the next maintainability step is data extraction or more content and visual polish.
+
+## 2026-04-09 22:03 America/New_York
+
+- Feature name: Production logo polish and release push
+- Work name: Header logo sizing refinement + production deployment
+- Description: Replaced the placeholder header brand with the real WrestleMania 42 logo, tuned the displayed size down in CSS for better balance, then committed and pushed the full static-site refactor and branding update to `origin/main`.
+- Value provided: Production now looks more official at first glance, and the shipped codebase is easier to maintain because the page is split into clear HTML, CSS, and JavaScript files.
+- Files changed: `index.html`, `styles.css`, `script.js`, `README.md`, `PROJECT_MEMORY.md`, `Assets/wm42.logo.png`, `Assets/WM-42-NightOne-BG.png`
+- Technical architecture changes or key technical decisions made: Kept the asset at full quality and controlled presentation size in CSS instead of editing the source file; shipped the release as one commit so production reflects a coherent state rather than piecemeal changes.
+- Assumptions: The live deployment target updates directly from `main`, and the real logo asset should remain visually secondary to the hero headline rather than acting as a dominant masthead.
+- Known limitations: Production was pushed without a full post-deploy browser QA pass, so final visual verification on live desktop and mobile remains outstanding.
+- Key learnings that you can bring with you to future sessions: Brand assets should usually be resized in the UI layer first because that preserves source quality and makes iteration faster; release notes are more useful when they distinguish between "shipped" and "verified live."
+- Remaining TODOs: Check the live site for final header balance, mobile nav spacing, and any asset-loading issues; add social metadata if the page will be shared externally.
+- Next steps: Perform a quick live QA pass on production, then make any final spacing or branding tweaks based on the real rendered result.
+
+## 2026-04-11 11:20 America/New_York
+
+- Feature name: Match-card UX refinement and mobile header polish
+- Work name: Card hierarchy redesign + compact mobile sticky header
+- Description: Removed filler copy from the match section, redesigned the match cards so the closed state scans faster and the expanded state feels more editorial, removed duplicated expanded-state match titles, and then tightened the sticky mobile header by keeping the logo and nav on one row with smaller, denser mobile navigation.
+- Value provided: The page now communicates the match card more clearly, reduces repetition inside expanded cards, and gives mobile users back more viewport space above the content.
+- Files changed: `index.html`, `script.js`, `styles.css`, `PROJECT_MEMORY.md`
+- Technical architecture changes or key technical decisions made: Kept the accordion logic intact and changed the component through content hierarchy and CSS rather than rewriting behavior; moved the expanded-state emphasis into a dedicated panel intro while making the closed card carry a single primary headline; handled the mobile header problem purely in responsive CSS by avoiding the stacked logo-plus-nav layout.
+- Assumptions: Users already understand which match they opened from the card’s top visual treatment, so repeating the match title in the expanded panel adds clutter rather than clarity; the mobile header should favor compactness over preserving the desktop visual weight.
+- Known limitations: The redesign was reviewed through code and selective visual feedback rather than a full structured browser QA pass across multiple real devices; the match cards may still need another round of tuning for headline wrapping and density on edge-case mobile widths.
+- Key learnings that you can bring with you to future sessions: In accordion-style content, the closed state should optimize for scan speed while the expanded state should optimize for depth; on mobile, reducing header height usually matters more than preserving a two-row brand/navigation treatment from desktop.
+- Remaining TODOs: Run a focused browser QA pass on the redesigned match cards in closed and open states across desktop and mobile; decide whether featured cards should gain an even stronger structural distinction on tablet sizes; consider further simplifying mobile nav if additional top-level links are added later.
+- Next steps: Validate the live mobile header and redesigned match cards on real devices, then make one final polish pass on card spacing, hook length, and featured-card emphasis if needed.
+
+## 2026-04-11 11:55 America/New_York
+
+- Feature name: Mobile header containment fix
+- Work name: Mobile nav overlap correction + section label rename
+- Description: Iterated on the mobile sticky header after real-device feedback showed the logo overlapping the first nav item, then replaced the fragile one-row scroll-strip behavior with an equal-width three-slot mobile nav and renamed the last link from `Experience` to `Extra` to better fit both the layout and the broader content intent of that section.
+- Value provided: The mobile header now fits the viewport more predictably, avoids clipping the first nav item, and uses a more future-friendly section label for bonus content beyond Danhausen.
+- Files changed: `index.html`, `styles.css`, `PROJECT_MEMORY.md`
+- Technical architecture changes or key technical decisions made: Solved the mobile header issue in the responsive CSS layer rather than adding JavaScript or changing information architecture; switched from flexible overflow behavior to explicit grid slots on mobile so nav items share space deterministically next to the logo.
+- Assumptions: Three top-level nav links can fit in compact equal-width mobile slots once the logo is slightly reduced and the longest label is shortened to `Extra`.
+- Known limitations: The fix was validated through user feedback and fast iteration rather than a structured cross-device QA matrix; if more top-level nav links are added later, the current equal-width mobile pattern will likely need to be revisited.
+- Key learnings that you can bring with you to future sessions: On very narrow mobile headers, explicit space allocation is more reliable than relying on flex plus overflow; shorter, more flexible nav labels can solve both product and layout problems at the same time.
+- Remaining TODOs: Continue checking the live site on real mobile devices; decide whether the mobile header should stay one-row permanently or evolve into a slimmer two-row pattern if the nav grows.
+- Next steps: Keep monitoring the mobile header on production and only revisit the pattern if additional links or branding elements create new crowding.
+
+## 2026-04-12 12:20 America/New_York
+
+- Feature name: Match-story content refresh
+- Work name: Danhausen/Miz card addition + Cody/Orton update + Extras nav polish
+- Description: Added a new `Danhausen vs. The Miz` singles match card based on current WWE.com story beats around Danhausen cursing Miz, offering to uncurse him and Kit Wilson, and beating Wilson on SmackDown; refreshed the `Cody Rhodes vs. Randy Orton` main-event card to reflect Pat McAfee’s active role in the feud and the fan backlash to his inclusion; also shipped the pending nav-label copy change from `Extra` to `Extras`.
+- Value provided: The site now reflects newer TV developments, the main-event copy feels more current and editorial, and the extras navigation label better communicates that the section can hold multiple bonus items.
+- Files changed: `script.js`, `index.html`, `PROJECT_MEMORY.md`
+- Technical architecture changes or key technical decisions made: Kept all changes in the structured match-story data model so the UI updated automatically without touching the card renderer; explicitly framed the Danhausen/Miz WrestleMania bout as a logical story payoff rather than an officially announced WWE match; treated fan reaction to McAfee as part of the Cody/Orton card’s editorial framing instead of a separate UI feature.
+- Assumptions: WWE.com highlight listings and current weekly show framing are sufficient primary-source grounding for the Danhausen/Miz and Cody/Orton copy; outside wrestling outlets can be used to characterize reaction around McAfee’s involvement but should not override WWE.com for the base storyline.
+- Known limitations: The Danhausen vs. The Miz match is written as a plausible WrestleMania payoff inferred from current TV beats, not a confirmed official booking; no live browser QA was run after this content update because the changes were copy/data-only.
+- Key learnings that you can bring with you to future sessions: For data-driven promo pages, timely editorial refreshes are cheapest and safest when the content lives in a single structured array; when real fan backlash becomes part of how a feud is being perceived, acknowledging that in the copy can make the page feel more current and less generic.
+- Remaining TODOs: Continue refreshing major match cards against current WWE programming as WrestleMania approaches; decide whether other cards should also call out real audience sentiment or remain strictly TV-story based; optionally add dedicated poster art for the new Danhausen/Miz entry if the feud stays on the card.
+- Next steps: Monitor WWE.com for any official booking updates that would require tightening the “inference” language on Danhausen/Miz or further revising the Cody/Orton McAfee framing.
+
+## 2026-04-12 16:35 America/New_York
+
+- Feature name: Two-night match experience and custom card-art polish
+- Work name: Night One / Night Two structure, targeted nav, mobile header fit, and image-backed featured cards
+- Description: Reorganized the match section into sequential `Night One` and `Night Two` editorial blocks, updated the top navigation so users can jump directly to each night, tightened the mobile header so the logo and three nav links fit on a single row, and upgraded the Ladder Match, Cody/Orton, Jade/Rhea, and Stephanie/Liv cards to use custom background art as the actual card surface instead of layering art over the default accent background.
+- Value provided: The site now reads more like a real two-night event plan, navigation maps more directly to the page structure, mobile header behavior is cleaner on-phone, and the most important match cards feel more premium and intentional.
+- Files changed: `index.html`, `styles.css`, `script.js`, `Assets/Cody-Randy-head-to-head.png`, `Assets/Jade-Ripley-head-to-head.png`, `Assets/Liv-Stephanie-head-to-head.png`, `PROJECT_MEMORY.md`
+- Technical architecture changes or key technical decisions made: Kept the two-night structure inside the existing match-story data model by assigning each card to a night and rendering grouped sections from config rather than hardcoding duplicate markup; fixed a layout bug by removing the stale outer `story-grid` class so the night sections could stack vertically; introduced a per-card `imageMode: 'replace'` option in the renderer so selected cards can use artwork as the true background while preserving a dark readability overlay.
+- Assumptions: The current official night split was stable enough to update the real-feeling matches, while remaining editorial or inferred matches could be assigned by best fit; the new head-to-head images were intended to be shipped assets for production use, not just local design references.
+- Known limitations: Some match-night placement is still partly editorial because not every card on the page represents a fully official announced booking; visual QA for the new art-backed cards relied on targeted review rather than a full multi-device screenshot pass.
+- Key learnings that you can bring with you to future sessions: Sequential content groups like event nights work better as full-width vertical chapters than as side-by-side comparison panels; when a design uses featured artwork, the renderer often needs multiple composition modes so some cards can use art as decoration while others use art as the primary surface.
+- Remaining TODOs: Keep checking official WWE announcements for any night-assignment changes; run a focused browser QA pass on the new image-backed cards for crop, text contrast, and focal-point quality on narrow screens; decide whether more match cards should receive custom artwork and `replace` mode.
+- Next steps: Validate the live two-night flow and custom art cards on real devices, then continue the visual upgrade path card-by-card only where the artwork clearly improves the storytelling surface.
+
+## 2026-04-12 17:10 America/New_York
+
+- Feature name: Match-card art direction refinement
+- Work name: Replacement-surface card art + mobile portrait focal-point tuning
+- Description: Extended the match-card renderer so selected cards can treat artwork as the true card background instead of layering it over the default accent surface, then applied that mode to the Ladder Match, Cody/Orton, Jade/Rhea, and Stephanie/Liv cards; after that, added per-card mobile image focal points so those art-backed cards crop intentionally in portrait view instead of relying on generic centered `cover` behavior.
+- Value provided: The most important match cards now feel more premium and editorial because the art is the real visual surface, and mobile users see stronger portrait crops that keep the right faces and focal beats visible.
+- Files changed: `script.js`, `styles.css`, `PROJECT_MEMORY.md`
+- Technical architecture changes or key technical decisions made: Introduced a reusable `imageMode: 'replace'` card option in the match-story renderer to support multiple composition modes without duplicating component markup; added `imagePosition` and `imagePositionMobile` data fields so art direction lives with the match card data rather than being hardcoded in CSS selectors.
+- Assumptions: The chosen mobile focal points are a good first-pass framing for the four image-backed cards and can be refined later through live visual review if any crop still feels off.
+- Known limitations: Only the currently image-backed cards use the new focal-point fields, and the focal-point values were chosen through targeted tuning rather than a full cross-device visual matrix; non-image-backed cards still use the default gradient-led visual treatment.
+- Key learnings that you can bring with you to future sessions: Responsive images often need art direction, not just scaling; when a component starts to support richer media, the strongest long-term pattern is to keep visual treatment choices in structured data so future cards can opt into the same system cleanly.
+- Remaining TODOs: Review the four art-backed cards on additional real devices for crop quality; decide whether Cody/Randy or the other featured cards need slightly different desktop focal points too; evaluate whether more matches should receive custom poster art now that the renderer supports it cleanly.
+- Next steps: Keep shipping custom card art selectively where it clearly improves storytelling, and tune focal points only after real-device checks rather than trying to overfit them prematurely in code.
+
+## 2026-04-12 18:05 America/New_York
+
+- Feature name: Marquee card-art system expansion
+- Work name: Additional head-to-head artwork rollout across major match cards
+- Description: Continued the custom-card-art rollout by wiring production artwork into the AJ Lee vs. Becky Lynch, CM Punk vs. Roman Reigns, Drew McIntyre vs. Jacob Fatu, women’s tag title, six-man showcase, and Gunther vs. Seth Rollins cards, all using the replacement-background and mobile focal-point system already introduced earlier in the session.
+- Value provided: A much larger share of the marquee match cards now feels like a cohesive premium poster system rather than a mix of polished hero cards and generic gradient cards.
+- Files changed: `script.js`, `Assets/Becky-AJ-head-to-head.png`, `Assets/Roman-Punk-head-to-head.png`, `Assets/drew-fatu-head-to-head.png`, `Assets/womens-tag-team-head-to-head.png`, `Assets/Usos-VisionJ-head-to-head.png`, `Assets/Rollins-Gunther-head-to-head.png`, `PROJECT_MEMORY.md`
+- Technical architecture changes or key technical decisions made: Reused the existing `imageMode: 'replace'`, `imagePosition`, and `imagePositionMobile` structure rather than inventing one-off card CSS; kept the rollout data-driven so each match can opt into poster-art treatment independently.
+- Assumptions: The newly added head-to-head poster assets are intended for production use and the initial focal-point values are good enough for first-pass mobile framing until live review suggests otherwise.
+- Known limitations: Several remaining cards still use the older gradient-led treatment; the new focal-point settings were chosen quickly and may need device-by-device refinement if a face or belt crops awkwardly on certain screens.
+- Key learnings that you can bring with you to future sessions: Once a flexible art-direction system exists, scaling a visual upgrade across many cards becomes mostly a content operation rather than a UI-engineering operation; this is a strong pattern for static promotional pages because it keeps iteration cheap while increasing visual quality.
+- Remaining TODOs: Review all newly art-backed cards on real mobile devices; decide which remaining cards are worth upgrading next versus leaving intentionally simpler; consider whether some non-featured cards should stay gradient-led to preserve contrast between marquee and secondary bouts.
+- Next steps: Continue the selective card-art rollout only where the artwork improves the storytelling surface, and tune focal points based on real-device review rather than expanding complexity in advance.
+
+## 2026-04-13 10:40 America/New_York
+
+- Feature name: Extras video carousel simplification
+- Work name: Config-driven YouTube embed carousel + graceful fallback
+- Description: Added a new video block above Danhausen in the `Extras` section, then simplified it after initial embed issues into a lower-maintenance carousel driven by a dedicated config file. The final version renders one active embedded YouTube player with a thumbnail carousel beneath it, sources its video list from `extras-videos.js`, removes admin-facing copy from the UI, and includes a subtle `Watch on YouTube` fallback link under the active player.
+- Value provided: The page now has a richer `Extras` section with bonus video content, but the operating model is lightweight: future video swaps happen in one small config file instead of requiring layout or copy rewrites. The section is also safer because users have a clear backup path when YouTube blocks an embed.
+- Files changed: `index.html`, `script.js`, `styles.css`, `extras-videos.js`, `PROJECT_MEMORY.md`
+- Technical architecture changes or key technical decisions made: Moved the video list into a dedicated config file loaded before the main app script; reduced the video data model to embed IDs plus optional short labels; derived embed URLs and YouTube thumbnails in `script.js` instead of storing heavier editorial metadata; dropped the earlier modal-based playback path in favor of an always-visible active embed and a permanent fallback link below it.
+- Assumptions: Using embed IDs/URLs is operationally simpler for future updates than storing raw iframe code or heavier per-video copy; some YouTube videos may still refuse in-page embedding, so a permanent fallback link is preferable to complex error handling on a static site.
+- Known limitations: The currently selected embedded videos still depend on YouTube’s external embed permissions and can fail in-page if those permissions change; the carousel currently favors operational simplicity over richer editorial storytelling; `extras-videos.js` must ship with the rest of the feature because the page now depends on it at runtime.
+- Key learnings that you can bring with you to future sessions: Match the admin model to the real workflow; if the real job is “swap videos often,” the config should optimize for video-slot management, not editorial content management. Also, graceful degradation matters for third-party embeds: product should fail into a usable fallback, not a dead end.
+- Remaining TODOs: Validate the live `Extras` carousel on desktop and mobile with the current embed set; swap any blocked or weak-performing videos in `extras-videos.js`; decide whether the carousel should gain arrows/dots or remain click-on-thumbnail only.
+- Next steps: Monitor real playback behavior in production, continue curating the embed list through `extras-videos.js`, and only add richer controls if users actually need more than the current thumbnail-switching pattern.
