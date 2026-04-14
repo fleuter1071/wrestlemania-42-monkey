@@ -20,6 +20,54 @@ const bindReveals = (root = document) => {
   });
 };
 
+const getYouTubeId = (entry) => {
+  if (typeof entry === 'string') {
+    return entry.trim();
+  }
+
+  if (!entry || typeof entry !== 'object') {
+    return '';
+  }
+
+  if (entry.embedId) {
+    return String(entry.embedId).trim();
+  }
+
+  const source = entry.embedUrl || entry.youtubeUrl || '';
+
+  if (!source) {
+    return '';
+  }
+
+  const match =
+    String(source).match(/youtube\.com\/embed\/([^?&/]+)/i) ||
+    String(source).match(/[?&]v=([^?&/]+)/i) ||
+    String(source).match(/youtu\.be\/([^?&/]+)/i);
+
+  return match ? match[1] : String(source).trim();
+};
+
+const extrasVideos = (Array.isArray(window.EXTRAS_EMBEDS) ? window.EXTRAS_EMBEDS : [])
+  .map((entry, index) => {
+    const embedId = getYouTubeId(entry);
+
+    if (!embedId) {
+      return null;
+    }
+
+    const data = typeof entry === 'object' ? entry : {};
+
+    return {
+      id: data.id || `extras-video-${index + 1}`,
+      label: data.label || `Clip ${String(index + 1).padStart(2, '0')}`,
+      title: data.title || `Featured video ${index + 1}`,
+      embedId,
+      embedUrl: `https://www.youtube.com/embed/${embedId}`,
+      thumbnailUrl: data.thumbnailUrl || `https://i.ytimg.com/vi/${embedId}/hqdefault.jpg`
+    };
+  })
+  .filter(Boolean);
+
 const matchStories = [
   {
     id: 'ic-ladder',
@@ -372,6 +420,9 @@ const matchStories = [
 
 const matchStoriesContainer = document.getElementById('matchStories');
 let activeStoryId = null;
+const extrasFeature = document.getElementById('extrasFeature');
+const extrasRail = document.getElementById('extrasRail');
+let activeExtrasVideoId = extrasVideos[0]?.id ?? null;
 
 const matchNightConfigs = [
   {
@@ -458,6 +509,67 @@ const renderStoryCard = (match) => {
   `;
 };
 
+const renderExtrasFeature = (video) => {
+  if (!video || !extrasFeature) {
+    return;
+  }
+
+  extrasFeature.innerHTML = `
+    <article class="extras-feature-card">
+      <div class="extras-feature-top">
+        <div class="extras-video-chip-row">
+          <span class="story-chip">${video.label}</span>
+        </div>
+      </div>
+      <div class="extras-feature-frame">
+        <iframe
+          src="${video.embedUrl}?rel=0&modestbranding=1"
+          title="${video.title}"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+        ></iframe>
+      </div>
+      <div class="extras-feature-footer">
+        <strong>${video.label}</strong>
+        <a class="extras-feature-link" href="https://www.youtube.com/watch?v=${video.embedId}" target="_blank" rel="noopener noreferrer">
+          Watch on YouTube
+        </a>
+      </div>
+    </article>
+  `;
+};
+
+const renderExtrasRail = () => {
+  if (!extrasFeature || !extrasRail || extrasVideos.length === 0) {
+    return;
+  }
+
+  const activeVideo = extrasVideos.find((video) => video.id === activeExtrasVideoId) ?? extrasVideos[0];
+  activeExtrasVideoId = activeVideo.id;
+  renderExtrasFeature(activeVideo);
+
+  extrasRail.innerHTML = extrasVideos.map((video) => {
+    const isActive = video.id === activeExtrasVideoId;
+
+    return `
+      <button
+        class="extras-thumb ${isActive ? 'is-active' : ''}"
+        type="button"
+        data-video-select="${video.id}"
+        role="tab"
+        aria-selected="${isActive}"
+      >
+        <span class="extras-thumb-poster" style="background-image: linear-gradient(180deg, rgba(5,5,8,0.1), rgba(5,5,8,0.7)), url('${video.thumbnailUrl}');"></span>
+        <span class="extras-thumb-copy">
+          <span class="extras-thumb-label">${video.label}</span>
+          <strong>${isActive ? 'Now selected' : 'Select clip'}</strong>
+        </span>
+      </button>
+    `;
+  }).join('');
+};
+
 const renderMatchStories = () => {
   matchStoriesContainer.innerHTML = matchNightConfigs.map((night) => {
     const matchesForNight = matchStories.filter((match) => match.night === night.id);
@@ -510,7 +622,21 @@ matchStoriesContainer.addEventListener('click', (event) => {
 
 renderMatchStories();
 syncStoryCards();
+renderExtrasRail();
 bindReveals();
+
+if (extrasRail) {
+  extrasRail.addEventListener('click', (event) => {
+    const thumb = event.target.closest('[data-video-select]');
+
+    if (!thumb) {
+      return;
+    }
+
+    activeExtrasVideoId = thumb.dataset.videoSelect;
+    renderExtrasRail();
+  });
+}
 
 const curseTrigger = document.getElementById('curseTrigger');
 const curseBats = document.getElementById('curseBats');
