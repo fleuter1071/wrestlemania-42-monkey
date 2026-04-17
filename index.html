@@ -90,36 +90,58 @@
           </div>
         </div>
 
-        <div class="curse-panel reveal">
-          <div class="curse-copy">
-            <div class="eyebrow">Very Nice, Very Evil</div>
-            <h2>One Last Visitor From The Shadows</h2>
-            <p>
-              Danhausen arrives at the bottom of the page the same way he shows up on WWE television:
-              unexpectedly, theatrically, and with absolutely no respect for your sense of safety.
-              Tap him if you dare.
-            </p>
-            <div class="story-meta">
-              <span>Mind your manners, humanoids</span>
-              <span>Tap the image for the curse</span>
+        <div class="predictions-board reveal" id="predictionsBoard">
+          <div class="predictions-board-header">
+            <div>
+              <div class="eyebrow">Prediction Board</div>
+              <h2>Who We’ve Got</h2>
             </div>
           </div>
-          <div class="curse-figure">
-            <div class="curse-bats" id="curseBats" aria-hidden="true">
-              <span class="curse-bat bat-1"></span>
-              <span class="curse-bat bat-2"></span>
-              <span class="curse-bat bat-3"></span>
-              <span class="curse-bat bat-4"></span>
-              <span class="curse-bat bat-5"></span>
-              <span class="curse-bat bat-6"></span>
+          <div class="predictions-list" id="predictionsList" aria-label="WrestleMania predictions"></div>
+        </div>
+
+        <div class="extras-easter-egg reveal">
+          <div class="extras-easter-egg-header">
+            <div>
+              <div class="eyebrow">Very Nice, Very Evil</div>
+              <h2>Danhausen Encounter</h2>
             </div>
-            <button class="curse-trigger" id="curseTrigger" type="button" aria-describedby="curseCallout">
-              <img src="Assets/Danhausen_pointing.png" alt="Danhausen pointing at the viewer" />
-            </button>
-            <audio id="curseAudio" preload="auto">
-              <source src="Assets/audio/danhausen-you-are-cursed.mp3" type="audio/mpeg" />
-            </audio>
-            <div class="curse-callout" id="curseCallout" aria-live="polite">You are cursed!</div>
+            <p>
+              One final extra lives below the picks: a standalone Danhausen moment with its own space,
+              its own mood, and zero chance of being mistaken for part of the prediction board.
+            </p>
+          </div>
+
+          <div class="curse-panel">
+            <div class="curse-copy">
+              <h3>One Last Visitor From The Shadows</h3>
+              <p>
+                Danhausen arrives at the bottom of the page the same way he shows up on WWE television:
+                unexpectedly, theatrically, and with absolutely no respect for your sense of safety.
+                Tap him if you dare.
+              </p>
+              <div class="story-meta">
+                <span>Mind your manners, humanoids</span>
+                <span>Tap the image for the curse</span>
+              </div>
+            </div>
+            <div class="curse-figure">
+              <div class="curse-bats" id="curseBats" aria-hidden="true">
+                <span class="curse-bat bat-1"></span>
+                <span class="curse-bat bat-2"></span>
+                <span class="curse-bat bat-3"></span>
+                <span class="curse-bat bat-4"></span>
+                <span class="curse-bat bat-5"></span>
+                <span class="curse-bat bat-6"></span>
+              </div>
+              <button class="curse-trigger" id="curseTrigger" type="button" aria-describedby="curseCallout">
+                <img src="Assets/Danhausen_pointing.png" alt="Danhausen pointing at the viewer" />
+              </button>
+              <audio id="curseAudio" preload="auto">
+                <source src="Assets/audio/danhausen-you-are-cursed.mp3" type="audio/mpeg" />
+              </audio>
+              <div class="curse-callout" id="curseCallout" aria-live="polite">You are cursed!</div>
+            </div>
           </div>
         </div>
       </div>
@@ -127,6 +149,8 @@
   </main>
 
   <script src="extras-videos.js"></script>
+  <script src="extras-predictions.js"></script>
+  <script src="extras-predictions-sheet.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

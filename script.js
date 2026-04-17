@@ -68,6 +68,39 @@ const extrasVideos = (Array.isArray(window.EXTRAS_EMBEDS) ? window.EXTRAS_EMBEDS
   })
   .filter(Boolean);
 
+const normalizePredictionEntry = (entry, index) => {
+  if (!entry || typeof entry !== 'object') {
+    return null;
+  }
+
+  const yourPrediction = entry.yourPrediction && typeof entry.yourPrediction === 'object'
+    ? entry.yourPrediction
+    : {};
+  const sonPrediction = entry.sonPrediction && typeof entry.sonPrediction === 'object'
+    ? entry.sonPrediction
+    : {};
+
+  return {
+    id: entry.id || `prediction-${index + 1}`,
+    night: entry.night ? String(entry.night).trim() : '',
+    match: entry.match ? String(entry.match).trim() : `Match ${index + 1}`,
+    yourWinner: yourPrediction.winner ? String(yourPrediction.winner).trim() : 'Add Pup Pup pick',
+    yourCommentary: yourPrediction.commentary ? String(yourPrediction.commentary).trim() : 'Add your reasoning here.',
+    sonWinner: sonPrediction.winner ? String(sonPrediction.winner).trim() : "Add Fiddle's pick",
+    sonCommentary: sonPrediction.commentary ? String(sonPrediction.commentary).trim() : 'Add his reasoning here.'
+  };
+};
+
+const localPredictions = (Array.isArray(window.EXTRAS_PREDICTIONS) ? window.EXTRAS_PREDICTIONS : [])
+  .map((entry, index) => normalizePredictionEntry(entry, index))
+  .filter(Boolean);
+
+let predictionEntries = [...localPredictions];
+
+const predictionSheetConfig = window.EXTRAS_PREDICTIONS_SHEET && typeof window.EXTRAS_PREDICTIONS_SHEET === 'object'
+  ? window.EXTRAS_PREDICTIONS_SHEET
+  : {};
+
 const matchStories = [
   {
     id: 'ic-ladder',
@@ -423,6 +456,150 @@ let activeStoryId = null;
 const extrasFeature = document.getElementById('extrasFeature');
 const extrasRail = document.getElementById('extrasRail');
 let activeExtrasVideoId = extrasVideos[0]?.id ?? null;
+const predictionsList = document.getElementById('predictionsList');
+
+const parseCsvRow = (line) => {
+  const values = [];
+  let current = '';
+  let insideQuotes = false;
+
+  for (let index = 0; index < line.length; index += 1) {
+    const character = line[index];
+    const nextCharacter = line[index + 1];
+
+    if (character === '"') {
+      if (insideQuotes && nextCharacter === '"') {
+        current += '"';
+        index += 1;
+      } else {
+        insideQuotes = !insideQuotes;
+      }
+      continue;
+    }
+
+    if (character === ',' && !insideQuotes) {
+      values.push(current);
+      current = '';
+      continue;
+    }
+
+    current += character;
+  }
+
+  values.push(current);
+  return values.map((value) => value.trim());
+};
+
+const parseCsvText = (csvText) => {
+  const normalizedText = String(csvText || '').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  const rows = [];
+  let currentLine = '';
+  let insideQuotes = false;
+
+  for (let index = 0; index < normalizedText.length; index += 1) {
+    const character = normalizedText[index];
+    const nextCharacter = normalizedText[index + 1];
+
+    if (character === '"') {
+      if (insideQuotes && nextCharacter === '"') {
+        currentLine += '""';
+        index += 1;
+      } else {
+        insideQuotes = !insideQuotes;
+        currentLine += character;
+      }
+      continue;
+    }
+
+    if (character === '\n' && !insideQuotes) {
+      if (currentLine.trim()) {
+        rows.push(parseCsvRow(currentLine));
+      }
+      currentLine = '';
+      continue;
+    }
+
+    currentLine += character;
+  }
+
+  if (currentLine.trim()) {
+    rows.push(parseCsvRow(currentLine));
+  }
+
+  return rows;
+};
+
+const normalizeHeaderKey = (value) =>
+  String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '');
+
+const mapSheetRowsToPredictions = (rows) => {
+  if (!Array.isArray(rows) || rows.length < 2) {
+    return [];
+  }
+
+  const [headerRow, ...dataRows] = rows;
+  const headerMap = headerRow.reduce((accumulator, columnName, index) => {
+    accumulator[normalizeHeaderKey(columnName)] = index;
+    return accumulator;
+  }, {});
+
+  const readColumn = (row, ...keys) => {
+    for (const key of keys) {
+      const columnIndex = headerMap[normalizeHeaderKey(key)];
+
+      if (columnIndex !== undefined && row[columnIndex] !== undefined) {
+        return String(row[columnIndex]).trim();
+      }
+    }
+
+    return '';
+  };
+
+  return dataRows
+    .map((row, index) => normalizePredictionEntry({
+      id: readColumn(row, 'id'),
+      night: readColumn(row, 'night'),
+      match: readColumn(row, 'match'),
+      yourPrediction: {
+        winner: readColumn(row, 'pup_pup_winner', 'puppupwinner', 'your_winner', 'yourwinner'),
+        commentary: readColumn(row, 'pup_pup_commentary', 'puppupcommentary', 'your_commentary', 'yourcommentary')
+      },
+      sonPrediction: {
+        winner: readColumn(row, 'fiddle_winner', 'fiddlewinner', 'son_winner', 'sonwinner'),
+        commentary: readColumn(row, 'fiddle_commentary', 'fiddlecommentary', 'son_commentary', 'soncommentary')
+      }
+    }, index))
+    .filter((entry) => entry && entry.match);
+};
+
+const loadPredictionSheet = async () => {
+  const csvUrl = predictionSheetConfig.csvUrl ? String(predictionSheetConfig.csvUrl).trim() : '';
+
+  if (!csvUrl || typeof fetch !== 'function') {
+    return;
+  }
+
+  try {
+    const response = await fetch(csvUrl, { cache: 'no-store' });
+
+    if (!response.ok) {
+      throw new Error(`Prediction sheet request failed: ${response.status}`);
+    }
+
+    const csvText = await response.text();
+    const sheetPredictions = mapSheetRowsToPredictions(parseCsvText(csvText));
+
+    if (sheetPredictions.length > 0) {
+      predictionEntries = sheetPredictions;
+      renderPredictions();
+    }
+  } catch (error) {
+    console.warn('Prediction sheet load failed, using local fallback.', error);
+  }
+};
 
 const matchNightConfigs = [
   {
@@ -570,6 +747,51 @@ const renderExtrasRail = () => {
   }).join('');
 };
 
+const renderPredictions = () => {
+  if (!predictionsList) {
+    return;
+  }
+
+  if (predictionEntries.length === 0) {
+    predictionsList.innerHTML = `
+      <article class="prediction-empty">
+        <div class="story-chip-row">
+          <span class="story-chip">No picks yet</span>
+        </div>
+        <h3>Add your final card to the Google Sheet or extras-predictions.js</h3>
+        <p>
+          This board can load from a published Google Sheet for shared editing, with the local file
+          acting as a fallback if the sheet is unavailable.
+        </p>
+      </article>
+    `;
+    return;
+  }
+
+  predictionsList.innerHTML = predictionEntries.map((entry) => `
+    <article class="prediction-card" data-prediction-card="${entry.id}">
+      <div class="prediction-card-header">
+        <div class="story-chip-row">
+          ${entry.night ? `<span class="story-chip gold">${entry.night}</span>` : '<span class="story-chip">Prediction</span>'}
+        </div>
+        <h3>${entry.match}</h3>
+      </div>
+      <div class="prediction-grid">
+        <section class="prediction-pane prediction-pane-yours" aria-label="Your prediction for ${entry.match}">
+          <p class="prediction-label">Pup Pup's Pick</p>
+          <h4>${entry.yourWinner}</h4>
+          <p>${entry.yourCommentary}</p>
+        </section>
+        <section class="prediction-pane prediction-pane-son" aria-label="Your son's prediction for ${entry.match}">
+          <p class="prediction-label">Fiddle's Pick</p>
+          <h4>${entry.sonWinner}</h4>
+          <p>${entry.sonCommentary}</p>
+        </section>
+      </div>
+    </article>
+  `).join('');
+};
+
 const renderMatchStories = () => {
   matchStoriesContainer.innerHTML = matchNightConfigs.map((night) => {
     const matchesForNight = matchStories.filter((match) => match.night === night.id);
@@ -623,7 +845,9 @@ matchStoriesContainer.addEventListener('click', (event) => {
 renderMatchStories();
 syncStoryCards();
 renderExtrasRail();
+renderPredictions();
 bindReveals();
+loadPredictionSheet();
 
 if (extrasRail) {
   extrasRail.addEventListener('click', (event) => {

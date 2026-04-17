@@ -153,3 +153,31 @@
 - Key learnings that you can bring with you to future sessions: Match the admin model to the real workflow; if the real job is “swap videos often,” the config should optimize for video-slot management, not editorial content management. Also, graceful degradation matters for third-party embeds: product should fail into a usable fallback, not a dead end.
 - Remaining TODOs: Validate the live `Extras` carousel on desktop and mobile with the current embed set; swap any blocked or weak-performing videos in `extras-videos.js`; decide whether the carousel should gain arrows/dots or remain click-on-thumbnail only.
 - Next steps: Monitor real playback behavior in production, continue curating the embed list through `extras-videos.js`, and only add richer controls if users actually need more than the current thumbnail-switching pattern.
+
+## 2026-04-16 21:10 America/New_York
+
+- Feature name: Family prediction board
+- Work name: Config-driven side-by-side WrestleMania picks in Extras
+- Description: Added a new predictions subsection inside `Extras` that renders match-by-match side-by-side picks for you and your son. The section is driven by a dedicated `extras-predictions.js` config file so the match list, winner picks, and commentary can all be updated without touching the rendering or layout code.
+- Value provided: The page now supports an easy-to-maintain family prediction experience that feels native to the existing site instead of like a bolted-on table or admin widget.
+- Files changed: `index.html`, `styles.css`, `script.js`, `extras-predictions.js`, `README.md`, `PROJECT_MEMORY.md`
+- Technical architecture changes or key technical decisions made: Used the same config-driven pattern already established by `extras-videos.js`; rendered the predictions as premium comparison cards instead of a raw table so the section inherits the site’s editorial feel and stays readable on mobile; added an empty-state fallback in case the prediction list is cleared while the final card is still being assembled.
+- Assumptions: The final WrestleMania card and both sets of picks will be maintained manually in `extras-predictions.js`; a side-by-side two-person comparison is the right long-term structure for this feature.
+- Known limitations: The starter prediction entries are scaffolding and need to be replaced with the real final-card matches and picks; no live browser QA was run after implementing the section.
+- Key learnings that you can bring with you to future sessions: When a static site needs frequent non-technical content updates, a small dedicated config file is usually the cleanest product and engineering boundary; comparison-heavy content reads better as responsive cards than as a strict desktop-first table.
+- Remaining TODOs: Replace the starter prediction entries with the real final WrestleMania card; run a browser QA pass on the new section across desktop and mobile; decide later whether post-show result tracking should be added.
+- Next steps: Populate `extras-predictions.js` with the final match list and both sets of picks, then visually QA the new section inside the full Extras flow.
+
+## 2026-04-16 22:15 America/New_York
+
+- Feature name: Shared prediction editing
+- Work name: Google Sheets-powered prediction source with local fallback
+- Description: Updated the prediction board so it can load match picks from a published Google Sheet instead of requiring direct edits to the repo file. The page now reads a CSV-based sheet config from `extras-predictions-sheet.js`, parses rows into prediction cards, and falls back to the local `extras-predictions.js` file if the sheet is unavailable.
+- Value provided: Both you and your son can update picks through a familiar shared sheet, while the site stays static and keeps a safe fallback if the remote source fails.
+- Files changed: `index.html`, `script.js`, `README.md`, `PROJECT_MEMORY.md`, `extras-predictions-sheet.js`
+- Technical architecture changes or key technical decisions made: Chose a published Google Sheet CSV as the lightest-weight editable backend; kept the local predictions file as a resilience fallback; added a small in-browser CSV parser and row-to-card mapper rather than introducing a backend or build step.
+- Assumptions: The Google Sheet will be published to the web as CSV and will use the documented column names; shared editing through Google Sheets is preferable to building a custom admin tool.
+- Known limitations: The sheet must be publicly readable or otherwise browser-accessible to the static page; there is no authentication, conflict handling, or admin validation layer; the page expects consistent row ids and column names.
+- Key learnings that you can bring with you to future sessions: For small shared-content workflows, a spreadsheet can act as a lightweight CMS if the page has a stable key structure and a documented schema; a fallback local source is valuable when introducing remote dependencies into an otherwise static site.
+- Remaining TODOs: Paste in the real published CSV URL; create and populate the actual Google Sheet; run a browser QA pass to verify the sheet data overrides the fallback correctly.
+- Next steps: Set up the sheet with the documented columns, publish it as CSV, paste the URL into the config file, and then test live edits by changing a row and reloading the local page.

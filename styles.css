@@ -684,6 +684,177 @@ h1 {
   margin-bottom: 28px;
 }
 
+.predictions-board {
+  display: grid;
+  gap: 22px;
+  margin-bottom: 28px;
+}
+
+.predictions-board-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.8fr);
+  gap: 24px;
+  align-items: end;
+}
+
+.predictions-board-header h2 {
+  margin: 12px 0 0;
+  font-family: "Barlow Condensed", Impact, sans-serif;
+  font-size: clamp(2.1rem, 4vw, 3.4rem);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.predictions-board-header p {
+  margin: 0;
+  max-width: 560px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.predictions-list {
+  display: grid;
+  gap: 18px;
+}
+
+.extras-easter-egg {
+  display: grid;
+  gap: 22px;
+}
+
+.extras-easter-egg-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.8fr);
+  gap: 24px;
+  align-items: end;
+}
+
+.extras-easter-egg-header h2 {
+  margin: 12px 0 0;
+  font-family: "Barlow Condensed", Impact, sans-serif;
+  font-size: clamp(2.1rem, 4vw, 3.4rem);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.extras-easter-egg-header p {
+  margin: 0;
+  max-width: 560px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.prediction-card,
+.prediction-empty {
+  position: relative;
+  display: grid;
+  gap: 20px;
+  padding: 26px;
+  border-radius: 30px;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: var(--shadow);
+  background:
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.12), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(225, 29, 72, 0.12), transparent 30%),
+    linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.04));
+}
+
+.prediction-card-header {
+  display: grid;
+  gap: 14px;
+}
+
+.prediction-card-header h3,
+.prediction-empty h3 {
+  margin: 0;
+  font-family: "Barlow Condensed", Impact, sans-serif;
+  max-width: 16ch;
+  font-size: clamp(2rem, 3.2vw, 3rem);
+  line-height: 0.98;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.prediction-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  position: relative;
+}
+
+.prediction-grid::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 50%;
+  width: 1px;
+  background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,0.14), rgba(255,255,255,0));
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.prediction-pane {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  min-width: 0;
+  padding: 22px 22px 20px;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.03));
+  overflow: hidden;
+}
+
+.prediction-pane::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,0.9), rgba(255,255,255,0));
+}
+
+.prediction-pane-yours::before {
+  background: linear-gradient(180deg, rgba(59,130,246,0), rgba(59,130,246,0.95), rgba(59,130,246,0));
+}
+
+.prediction-pane-son::before {
+  background: linear-gradient(180deg, rgba(245,158,11,0), rgba(245,158,11,0.95), rgba(245,158,11,0));
+}
+
+.prediction-label {
+  margin: 0;
+  color: rgba(255,255,255,0.62);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.prediction-pane h4 {
+  margin: 0;
+  color: #ffffff;
+  font-family: "Barlow Condensed", Impact, sans-serif;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  line-height: 1;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.prediction-pane p:last-child,
+.prediction-empty p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.96rem;
+  line-height: 1.65;
+  max-width: 34ch;
+}
+
 .extras-media-header {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(300px, 0.7fr);
@@ -863,10 +1034,10 @@ h1 {
   z-index: 1;
 }
 
-.curse-copy h2 {
-  margin: 12px 0 0;
+.curse-copy h3 {
+  margin: 0;
   font-family: "Barlow Condensed", Impact, sans-serif;
-  font-size: clamp(2.2rem, 4vw, 3.6rem);
+  font-size: clamp(2rem, 3.4vw, 3.1rem);
   line-height: 0.95;
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -1201,7 +1372,9 @@ h1 {
   }
 
   .extras-media-header,
-  .extras-media-shell {
+  .extras-media-shell,
+  .predictions-board-header,
+  .extras-easter-egg-header {
     grid-template-columns: 1fr;
   }
 
@@ -1287,6 +1460,17 @@ h1 {
     gap: 12px;
   }
 
+  .prediction-card,
+  .prediction-empty {
+    padding: 18px;
+    gap: 16px;
+  }
+
+  .prediction-card-header h3,
+  .prediction-empty h3 {
+    max-width: none;
+  }
+
   .extras-feature-top,
   .extras-feature-footer {
     align-items: start;
@@ -1317,6 +1501,14 @@ h1 {
     min-height: 214px;
     padding: 18px;
     background-position: var(--graphic-position-mobile, var(--graphic-position, center));
+  }
+
+  .prediction-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .prediction-grid::before {
+    display: none;
   }
 
   .story-graphic-copy {
