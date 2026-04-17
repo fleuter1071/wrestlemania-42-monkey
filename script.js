@@ -813,19 +813,25 @@ const renderPredictions = () => {
   predictionsList.innerHTML = predictionEntries.map((entry) => `
     <article class="prediction-card" data-prediction-card="${entry.id}">
       <div class="prediction-card-header">
-        <div class="story-chip-row">
+        <div class="story-chip-row prediction-card-chips">
           ${entry.night ? `<span class="story-chip gold">${entry.night}</span>` : '<span class="story-chip">Prediction</span>'}
         </div>
         <h3>${entry.match}</h3>
       </div>
       <div class="prediction-grid">
         <section class="prediction-pane prediction-pane-yours" aria-label="Your prediction for ${entry.match}">
-          <p class="prediction-label">Pup Pup's Pick</p>
+          <div class="prediction-pane-top">
+            <span class="prediction-namechip prediction-namechip-yours">Pup Pup</span>
+            <p class="prediction-label">Pup Pup's Pick</p>
+          </div>
           <h4>${entry.yourWinner}</h4>
           <p>${entry.yourCommentary}</p>
         </section>
         <section class="prediction-pane prediction-pane-son" aria-label="Your son's prediction for ${entry.match}">
-          <p class="prediction-label">Fiddle's Pick</p>
+          <div class="prediction-pane-top">
+            <span class="prediction-namechip prediction-namechip-son">Fiddle</span>
+            <p class="prediction-label">Fiddle's Pick</p>
+          </div>
           <h4>${entry.sonWinner}</h4>
           <p>${entry.sonCommentary}</p>
         </section>

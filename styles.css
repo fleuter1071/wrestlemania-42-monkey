@@ -750,8 +750,8 @@ h1 {
 .prediction-empty {
   position: relative;
   display: grid;
-  gap: 20px;
-  padding: 26px;
+  gap: 22px;
+  padding: 28px;
   border-radius: 30px;
   border: 1px solid rgba(255,255,255,0.12);
   box-shadow: var(--shadow);
@@ -763,7 +763,11 @@ h1 {
 
 .prediction-card-header {
   display: grid;
-  gap: 14px;
+  gap: 16px;
+}
+
+.prediction-card-chips {
+  align-items: center;
 }
 
 .prediction-card-header h3,
@@ -771,16 +775,17 @@ h1 {
   margin: 0;
   font-family: "Barlow Condensed", Impact, sans-serif;
   max-width: 16ch;
-  font-size: clamp(2rem, 3.2vw, 3rem);
-  line-height: 0.98;
+  font-size: clamp(1.9rem, 3vw, 2.8rem);
+  line-height: 1;
   letter-spacing: 0.02em;
   text-transform: uppercase;
+  text-wrap: balance;
 }
 
 .prediction-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 22px;
+  gap: 24px;
   position: relative;
 }
 
@@ -800,9 +805,9 @@ h1 {
   position: relative;
   display: grid;
   align-content: start;
-  gap: 12px;
+  gap: 14px;
   min-width: 0;
-  padding: 22px 22px 20px;
+  padding: 22px 22px 22px;
   border-radius: 22px;
   border: 1px solid rgba(255,255,255,0.1);
   background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.03));
@@ -829,18 +834,49 @@ h1 {
 .prediction-label {
   margin: 0;
   color: rgba(255,255,255,0.62);
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   font-weight: 900;
   letter-spacing: 0.2em;
   text-transform: uppercase;
+}
+
+.prediction-pane-top {
+  display: grid;
+  gap: 10px;
+}
+
+.prediction-namechip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  width: fit-content;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.prediction-namechip-yours {
+  color: #c9dfff;
+  border: 1px solid rgba(59,130,246,0.34);
+  background: rgba(59,130,246,0.12);
+}
+
+.prediction-namechip-son {
+  color: #ffe1a3;
+  border: 1px solid rgba(245,158,11,0.34);
+  background: rgba(245,158,11,0.12);
 }
 
 .prediction-pane h4 {
   margin: 0;
   color: #ffffff;
   font-family: "Barlow Condensed", Impact, sans-serif;
-  font-size: clamp(1.5rem, 2vw, 2rem);
-  line-height: 1;
+  font-size: clamp(1.35rem, 1.8vw, 1.85rem);
+  line-height: 1.04;
   letter-spacing: 0.005em;
   text-transform: uppercase;
   text-wrap: balance;
@@ -850,8 +886,8 @@ h1 {
 .prediction-empty p {
   margin: 0;
   color: var(--muted);
-  font-size: 0.96rem;
-  line-height: 1.65;
+  font-size: 1rem;
+  line-height: 1.7;
   max-width: 34ch;
 }
 
@@ -1462,13 +1498,15 @@ h1 {
 
   .prediction-card,
   .prediction-empty {
-    padding: 18px;
-    gap: 16px;
+    padding: 20px;
+    gap: 18px;
   }
 
   .prediction-card-header h3,
   .prediction-empty h3 {
     max-width: none;
+    font-size: clamp(1.35rem, 7vw, 1.9rem);
+    line-height: 1.02;
   }
 
   .extras-feature-top,
@@ -1505,10 +1543,38 @@ h1 {
 
   .prediction-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
 
   .prediction-grid::before {
     display: none;
+  }
+
+  .prediction-pane {
+    padding: 18px 18px 20px;
+    gap: 12px;
+  }
+
+  .prediction-pane-top {
+    gap: 8px;
+  }
+
+  .prediction-namechip {
+    min-height: 30px;
+    padding: 0 12px;
+    font-size: 0.68rem;
+  }
+
+  .prediction-pane h4 {
+    font-size: clamp(1.15rem, 5vw, 1.45rem);
+    line-height: 1.06;
+  }
+
+  .prediction-pane p:last-child,
+  .prediction-empty p {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    max-width: none;
   }
 
   .story-graphic-copy {
