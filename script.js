@@ -575,6 +575,38 @@ const mapSheetRowsToPredictions = (rows) => {
     .filter((entry) => entry && entry.match);
 };
 
+const mergePredictionEntries = (baseEntries, sheetEntries) => {
+  const baseById = new Map(baseEntries.map((entry) => [entry.id, entry]));
+  const mergedEntries = [];
+
+  baseEntries.forEach((baseEntry) => {
+    const sheetEntry = sheetEntries.find((entry) => entry.id === baseEntry.id);
+
+    if (!sheetEntry) {
+      mergedEntries.push(baseEntry);
+      return;
+    }
+
+    mergedEntries.push({
+      ...baseEntry,
+      night: sheetEntry.night || baseEntry.night,
+      match: sheetEntry.match || baseEntry.match,
+      yourWinner: sheetEntry.yourWinner !== 'Add Pup Pup pick' ? sheetEntry.yourWinner : baseEntry.yourWinner,
+      yourCommentary: sheetEntry.yourCommentary !== 'Add your reasoning here.' ? sheetEntry.yourCommentary : baseEntry.yourCommentary,
+      sonWinner: sheetEntry.sonWinner !== "Add Fiddle's pick" ? sheetEntry.sonWinner : baseEntry.sonWinner,
+      sonCommentary: sheetEntry.sonCommentary !== 'Add his reasoning here.' ? sheetEntry.sonCommentary : baseEntry.sonCommentary
+    });
+  });
+
+  sheetEntries.forEach((sheetEntry) => {
+    if (!baseById.has(sheetEntry.id)) {
+      mergedEntries.push(sheetEntry);
+    }
+  });
+
+  return mergedEntries;
+};
+
 const loadPredictionSheet = async () => {
   const csvUrl = predictionSheetConfig.csvUrl ? String(predictionSheetConfig.csvUrl).trim() : '';
 
@@ -583,7 +615,9 @@ const loadPredictionSheet = async () => {
   }
 
   try {
-    const response = await fetch(csvUrl, { cache: 'no-store' });
+    const separator = csvUrl.includes('?') ? '&' : '?';
+    const bustUrl = `${csvUrl}${separator}t=${Date.now()}`;
+    const response = await fetch(bustUrl, { cache: 'no-store' });
 
     if (!response.ok) {
       throw new Error(`Prediction sheet request failed: ${response.status}`);
@@ -593,7 +627,7 @@ const loadPredictionSheet = async () => {
     const sheetPredictions = mapSheetRowsToPredictions(parseCsvText(csvText));
 
     if (sheetPredictions.length > 0) {
-      predictionEntries = sheetPredictions;
+      predictionEntries = mergePredictionEntries(localPredictions, sheetPredictions);
       renderPredictions();
     }
   } catch (error) {
