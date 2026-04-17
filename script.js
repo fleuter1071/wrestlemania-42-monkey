@@ -1,13 +1,15 @@
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('is-visible');
-      observer.unobserve(entry.target);
-    }
-  });
-}, {
-  threshold: 0.14
-});
+const observer = typeof window !== 'undefined' && 'IntersectionObserver' in window
+  ? new window.IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.14
+  })
+  : null;
 
 const bindReveals = (root = document) => {
   root.querySelectorAll('.reveal').forEach((el) => {
@@ -16,7 +18,13 @@ const bindReveals = (root = document) => {
     }
 
     el.dataset.revealBound = 'true';
-    observer.observe(el);
+
+    if (observer) {
+      observer.observe(el);
+      return;
+    }
+
+    el.classList.add('is-visible');
   });
 };
 
@@ -455,7 +463,7 @@ const matchStoriesContainer = document.getElementById('matchStories');
 let activeStoryId = null;
 const extrasFeature = document.getElementById('extrasFeature');
 const extrasRail = document.getElementById('extrasRail');
-let activeExtrasVideoId = extrasVideos[0]?.id ?? null;
+let activeExtrasVideoId = extrasVideos.length > 0 ? extrasVideos[0].id : null;
 const predictionsList = document.getElementById('predictionsList');
 
 const parseCsvRow = (line) => {
