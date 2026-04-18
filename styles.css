@@ -718,6 +718,125 @@ h1 {
   gap: 18px;
 }
 
+.live-reactions {
+  display: grid;
+  gap: 22px;
+  margin-bottom: 28px;
+}
+
+.live-reactions-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.8fr);
+  gap: 24px;
+  align-items: end;
+}
+
+.live-reactions-header h2 {
+  margin: 12px 0 0;
+  font-family: "Barlow Condensed", Impact, sans-serif;
+  font-size: clamp(2.1rem, 4vw, 3.4rem);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.live-reactions-header p {
+  margin: 0;
+  max-width: 560px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.live-reactions-timeline {
+  position: relative;
+  display: grid;
+  gap: 16px;
+  padding-left: 28px;
+}
+
+.live-reactions-timeline::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 10px;
+  width: 1px;
+  background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,0.18), rgba(255,255,255,0));
+}
+
+.live-note-card {
+  position: relative;
+  display: grid;
+  gap: 14px;
+  padding: 22px;
+  border-radius: 28px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background:
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.1), transparent 32%),
+    radial-gradient(circle at bottom right, rgba(225, 29, 72, 0.08), transparent 28%),
+    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.035));
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+}
+
+.live-note-card::before {
+  content: "";
+  position: absolute;
+  top: 30px;
+  left: -24px;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.7);
+  box-shadow: 0 0 0 6px rgba(255,255,255,0.06);
+}
+
+.live-note-card.is-featured {
+  gap: 18px;
+  padding: 28px;
+  border-color: rgba(255,255,255,0.14);
+  background:
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.16), transparent 32%),
+    radial-gradient(circle at bottom right, rgba(225, 29, 72, 0.12), transparent 28%),
+    linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+}
+
+.live-note-card.is-featured::before,
+.live-note-card.is-empty::before {
+  display: none;
+}
+
+.live-note-top {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.live-note-chips {
+  align-items: start;
+}
+
+.live-note-body {
+  color: #ffffff;
+  font-size: 1rem;
+  line-height: 1.75;
+  max-width: 60ch;
+}
+
+.live-note-card.is-featured .live-note-body {
+  font-size: clamp(1.1rem, 1.8vw, 1.28rem);
+  line-height: 1.8;
+  max-width: 52ch;
+}
+
+.live-note-footer {
+  color: rgba(255,255,255,0.58);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
 .extras-easter-egg {
   display: grid;
   gap: 22px;
@@ -1409,6 +1528,7 @@ h1 {
 
   .extras-media-header,
   .extras-media-shell,
+  .live-reactions-header,
   .predictions-board-header,
   .extras-easter-egg-header {
     grid-template-columns: 1fr;
@@ -1502,6 +1622,21 @@ h1 {
     gap: 18px;
   }
 
+  .live-reactions-timeline {
+    padding-left: 22px;
+  }
+
+  .live-note-card {
+    padding: 18px;
+  }
+
+  .live-note-card::before {
+    top: 26px;
+    left: -18px;
+    width: 8px;
+    height: 8px;
+  }
+
   .prediction-card-header h3,
   .prediction-empty h3 {
     max-width: none;
@@ -1574,6 +1709,23 @@ h1 {
   .prediction-empty p {
     font-size: 0.92rem;
     line-height: 1.6;
+    max-width: none;
+  }
+
+  .live-note-top {
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .live-note-body {
+    font-size: 0.96rem;
+    line-height: 1.7;
+    max-width: none;
+  }
+
+  .live-note-card.is-featured .live-note-body {
+    font-size: 1rem;
+    line-height: 1.72;
     max-width: none;
   }
 

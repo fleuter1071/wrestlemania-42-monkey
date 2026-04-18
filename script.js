@@ -28,6 +28,13 @@ const bindReveals = (root = document) => {
   });
 };
 
+const escapeHtml = (value) => String(value ?? '')
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;')
+  .replace(/'/g, '&#39;');
+
 const getYouTubeId = (entry) => {
   if (typeof entry === 'string') {
     return entry.trim();
@@ -107,6 +114,9 @@ let predictionEntries = [...localPredictions];
 
 const predictionSheetConfig = window.EXTRAS_PREDICTIONS_SHEET && typeof window.EXTRAS_PREDICTIONS_SHEET === 'object'
   ? window.EXTRAS_PREDICTIONS_SHEET
+  : {};
+const liveSheetConfig = window.EXTRAS_LIVE_SHEET && typeof window.EXTRAS_LIVE_SHEET === 'object'
+  ? window.EXTRAS_LIVE_SHEET
   : {};
 
 const matchStories = [
@@ -465,6 +475,9 @@ const extrasFeature = document.getElementById('extrasFeature');
 const extrasRail = document.getElementById('extrasRail');
 let activeExtrasVideoId = extrasVideos.length > 0 ? extrasVideos[0].id : null;
 const predictionsList = document.getElementById('predictionsList');
+const liveReactionsFeatured = document.getElementById('liveReactionsFeatured');
+const liveReactionsTimeline = document.getElementById('liveReactionsTimeline');
+let liveReactionEntries = [];
 
 const parseCsvRow = (line) => {
   const values = [];
@@ -615,6 +628,60 @@ const mergePredictionEntries = (baseEntries, sheetEntries) => {
   return mergedEntries;
 };
 
+const normalizeLiveEntry = (entry, index) => {
+  if (!entry || typeof entry !== 'object') {
+    return null;
+  }
+
+  return {
+    id: entry.id || `live-note-${index + 1}`,
+    timestamp: entry.timestamp ? String(entry.timestamp).trim() : '',
+    night: entry.night ? String(entry.night).trim() : '',
+    tag: entry.tag ? String(entry.tag).trim() : '',
+    match: entry.match ? String(entry.match).trim() : '',
+    entry: entry.entry ? String(entry.entry).trim() : '',
+    featured: String(entry.featured || '').trim().toLowerCase() === 'yes',
+    sortOrder: Number.isFinite(Number(entry.sortOrder)) ? Number(entry.sortOrder) : index
+  };
+};
+
+const mapSheetRowsToLiveEntries = (rows) => {
+  if (!Array.isArray(rows) || rows.length < 2) {
+    return [];
+  }
+
+  const [headerRow, ...dataRows] = rows;
+  const headerMap = headerRow.reduce((accumulator, columnName, index) => {
+    accumulator[normalizeHeaderKey(columnName)] = index;
+    return accumulator;
+  }, {});
+
+  const readColumn = (row, ...keys) => {
+    for (const key of keys) {
+      const columnIndex = headerMap[normalizeHeaderKey(key)];
+
+      if (columnIndex !== undefined && row[columnIndex] !== undefined) {
+        return String(row[columnIndex]).trim();
+      }
+    }
+
+    return '';
+  };
+
+  return dataRows
+    .map((row, index) => normalizeLiveEntry({
+      id: readColumn(row, 'id'),
+      timestamp: readColumn(row, 'timestamp'),
+      night: readColumn(row, 'night'),
+      tag: readColumn(row, 'tag'),
+      match: readColumn(row, 'match'),
+      entry: readColumn(row, 'entry'),
+      featured: readColumn(row, 'featured'),
+      sortOrder: readColumn(row, 'sort_order', 'sortorder')
+    }, index))
+    .filter((entry) => entry && entry.entry);
+};
+
 const loadPredictionSheet = async () => {
   const csvUrl = predictionSheetConfig.csvUrl ? String(predictionSheetConfig.csvUrl).trim() : '';
 
@@ -640,6 +707,77 @@ const loadPredictionSheet = async () => {
     }
   } catch (error) {
     console.warn('Prediction sheet load failed, using local fallback.', error);
+  }
+};
+
+const renderLiveReactionCard = (entry, featured = false) => {
+  const chips = [
+    entry.timestamp ? `<span class="story-chip">${escapeHtml(entry.timestamp)}</span>` : '',
+    entry.night ? `<span class="story-chip gold">${escapeHtml(entry.night)}</span>` : '',
+    entry.tag ? `<span class="story-chip">${escapeHtml(entry.tag)}</span>` : '',
+    entry.match ? `<span class="story-chip">${escapeHtml(entry.match)}</span>` : ''
+  ].filter(Boolean).join('');
+
+  return `
+    <article class="live-note-card ${featured ? 'is-featured' : ''}" data-live-note="${escapeHtml(entry.id)}">
+      <div class="live-note-top">
+        <div class="story-chip-row live-note-chips">${chips}</div>
+      </div>
+      <div class="live-note-body">${escapeHtml(entry.entry)}</div>
+      ${featured ? '<div class="live-note-footer">Latest note from the feed</div>' : ''}
+    </article>
+  `;
+};
+
+const renderLiveReactions = () => {
+  if (!liveReactionsFeatured || !liveReactionsTimeline) {
+    return;
+  }
+
+  if (liveReactionEntries.length === 0) {
+    liveReactionsFeatured.innerHTML = `
+      <article class="live-note-card is-empty">
+        <div class="story-chip-row">
+          <span class="story-chip">No live notes yet</span>
+        </div>
+        <div class="live-note-body">Add rows to the live reactions sheet and they will appear here during the show.</div>
+      </article>
+    `;
+    liveReactionsTimeline.innerHTML = '';
+    return;
+  }
+
+  const orderedEntries = [...liveReactionEntries].sort((left, right) => left.sortOrder - right.sortOrder);
+  const featuredEntry = orderedEntries.find((entry) => entry.featured) || orderedEntries[0];
+  const timelineEntries = orderedEntries.filter((entry) => entry.id !== featuredEntry.id);
+
+  liveReactionsFeatured.innerHTML = renderLiveReactionCard(featuredEntry, true);
+  liveReactionsTimeline.innerHTML = timelineEntries.map((entry) => renderLiveReactionCard(entry)).join('');
+};
+
+const loadLiveSheet = async () => {
+  const csvUrl = liveSheetConfig.csvUrl ? String(liveSheetConfig.csvUrl).trim() : '';
+
+  if (!csvUrl || typeof fetch !== 'function') {
+    renderLiveReactions();
+    return;
+  }
+
+  try {
+    const separator = csvUrl.includes('?') ? '&' : '?';
+    const bustUrl = `${csvUrl}${separator}t=${Date.now()}`;
+    const response = await fetch(bustUrl, { cache: 'no-store' });
+
+    if (!response.ok) {
+      throw new Error(`Live sheet request failed: ${response.status}`);
+    }
+
+    const csvText = await response.text();
+    liveReactionEntries = mapSheetRowsToLiveEntries(parseCsvText(csvText));
+    renderLiveReactions();
+  } catch (error) {
+    console.warn('Live reactions sheet load failed.', error);
+    renderLiveReactions();
   }
 };
 
@@ -811,29 +949,29 @@ const renderPredictions = () => {
   }
 
   predictionsList.innerHTML = predictionEntries.map((entry) => `
-    <article class="prediction-card" data-prediction-card="${entry.id}">
+    <article class="prediction-card" data-prediction-card="${escapeHtml(entry.id)}">
       <div class="prediction-card-header">
         <div class="story-chip-row prediction-card-chips">
-          ${entry.night ? `<span class="story-chip gold">${entry.night}</span>` : '<span class="story-chip">Prediction</span>'}
+          ${entry.night ? `<span class="story-chip gold">${escapeHtml(entry.night)}</span>` : '<span class="story-chip">Prediction</span>'}
         </div>
-        <h3>${entry.match}</h3>
+        <h3>${escapeHtml(entry.match)}</h3>
       </div>
       <div class="prediction-grid">
-        <section class="prediction-pane prediction-pane-yours" aria-label="Your prediction for ${entry.match}">
+        <section class="prediction-pane prediction-pane-yours" aria-label="Your prediction for ${escapeHtml(entry.match)}">
           <div class="prediction-pane-top">
             <span class="prediction-namechip prediction-namechip-yours">Pup Pup</span>
             <p class="prediction-label">Pup Pup's Pick</p>
           </div>
-          <h4>${entry.yourWinner}</h4>
-          <p>${entry.yourCommentary}</p>
+          <h4>${escapeHtml(entry.yourWinner)}</h4>
+          <p>${escapeHtml(entry.yourCommentary)}</p>
         </section>
-        <section class="prediction-pane prediction-pane-son" aria-label="Your son's prediction for ${entry.match}">
+        <section class="prediction-pane prediction-pane-son" aria-label="Your son's prediction for ${escapeHtml(entry.match)}">
           <div class="prediction-pane-top">
             <span class="prediction-namechip prediction-namechip-son">Fiddle</span>
             <p class="prediction-label">Fiddle's Pick</p>
           </div>
-          <h4>${entry.sonWinner}</h4>
-          <p>${entry.sonCommentary}</p>
+          <h4>${escapeHtml(entry.sonWinner)}</h4>
+          <p>${escapeHtml(entry.sonCommentary)}</p>
         </section>
       </div>
     </article>
@@ -894,8 +1032,10 @@ renderMatchStories();
 syncStoryCards();
 renderExtrasRail();
 renderPredictions();
+renderLiveReactions();
 bindReveals();
 loadPredictionSheet();
+loadLiveSheet();
 
 if (extrasRail) {
   extrasRail.addEventListener('click', (event) => {

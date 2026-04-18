@@ -181,3 +181,45 @@
 - Key learnings that you can bring with you to future sessions: For small shared-content workflows, a spreadsheet can act as a lightweight CMS if the page has a stable key structure and a documented schema; a fallback local source is valuable when introducing remote dependencies into an otherwise static site.
 - Remaining TODOs: Paste in the real published CSV URL; create and populate the actual Google Sheet; run a browser QA pass to verify the sheet data overrides the fallback correctly.
 - Next steps: Set up the sheet with the documented columns, publish it as CSV, paste the URL into the config file, and then test live edits by changing a row and reloading the local page.
+
+## 2026-04-17 07:54 America/New_York
+
+- Feature name: Prediction Board production hardening and polish
+- Work name: Live Google Sheet hookup, merge-safe runtime behavior, mobile visibility fix, and presentation cleanup
+- Description: Connected the live site to the published Google Sheet CSV for shared prediction editing, expanded the prediction slots to match the current card, fixed the runtime so sheet values merge into local fallback entries instead of wiping them out, removed reveal-based visibility dependence from the `Extras` subsections for safer mobile rendering, and polished the Prediction Board presentation with stronger Pup Pup/Fiddle identity while removing unreliable same-pick/split-decision inference.
+- Value provided: The prediction experience now works as a practical shared-editing product instead of a local-only feature. Both people can update picks through Google Sheets, production points to the same CSV source as local, mobile rendering is safer, and the board reads more clearly as a two-person comparison experience.
+- Files changed: `index.html`, `script.js`, `styles.css`, `extras-predictions.js`, `extras-predictions-sheet.js`, `README.md`, `PROJECT_MEMORY.md`
+- Technical architecture changes or key technical decisions made: Treated Google Sheets as a lightweight CMS by reading a published CSV in-browser; preserved resilience by merging remote sheet values into local fallback entries by `id`; cache-busted sheet fetches to reduce stale published-sheet behavior; removed section-level reveal wrappers from core `Extras` content so important surfaces do not depend on animation state to render; kept identity clarity through static Pup Pup/Fiddle styling rather than trying to infer semantic agreement from free-text picks.
+- Assumptions: The published Google Sheet URL will remain stable and publicly readable; row ids in the sheet will continue to align with the board’s expected ids; free-text pick values may use nicknames or different phrasing, so agreement detection should not be treated as reliable product logic.
+- Known limitations: Published Google Sheets can still have short propagation delay after edits; the shared editing flow has no validation or auth layer; unrelated untracked local files remain in the repo and were intentionally excluded from the production pushes.
+- Key learnings that you can bring with you to future sessions: For static sites, remote content should merge with local fallback data instead of replacing it wholesale when rows may be partially filled. Also, critical product content should not depend on decorative reveal logic to become visible, especially on mobile.
+- Remaining TODOs: Run a structured QA pass on the live site across desktop and mobile after more sheet edits; clean up placeholder values still living in the sheet and fallback file; decide later whether the sheet-backed board needs lightweight validation or result tracking after the event.
+- Next steps: Continue using the Google Sheet as the editing source of truth, verify live updates after meaningful edits, and refine long-match mobile typography only if real-device usage shows remaining readability issues.
+
+## 2026-04-18 00:20 America/New_York
+
+- Feature name: Live reactions feed
+- Work name: Featured note plus editorial timeline powered by a second Google Sheet
+- Description: Added a new `Live Reactions` section between the Prediction Board and Danhausen. The section includes a featured latest note, a stacked live timeline, author identity chips for Pup Pup and Fiddle, an empty state, and a second Google Sheet config file so live notes can be published into the site the same way predictions are.
+- Value provided: The site can now evolve during the event itself instead of only before it. This gives you a lightweight live-blogging style surface without introducing a backend or breaking the site’s premium editorial feel.
+- Files changed: `index.html`, `script.js`, `styles.css`, `extras-live-sheet.js`, `README.md`, `PROJECT_MEMORY.md`
+- Technical architecture changes or key technical decisions made: Treated live notes as a separate content mode from predictions by using a featured-note-plus-timeline layout rather than another comparison grid; added a second CSV loader and row mapper in `script.js`; used a dedicated `extras-live-sheet.js` config so the live feed can be turned on independently of predictions.
+- Assumptions: Live reactions will be maintained in a second published Google Sheet with the documented schema; the live note body is the primary content and optional metadata like tags and match labels may vary from note to note.
+- Known limitations: No live reactions will render until a CSV URL is configured and populated; the feed currently relies on page refresh rather than timed polling; there is no moderation or validation layer for live entries.
+- Key learnings that you can bring with you to future sessions: A site can support multiple content modes cleanly when each mode gets its own visual grammar and data source. In this case, predictions are comparison-driven while live reactions are time-driven, so they should not share the same card architecture.
+- Remaining TODOs: Create and publish the live reactions Google Sheet; wire its CSV URL into `extras-live-sheet.js`; run visual QA with realistic note volume on desktop and mobile; decide later whether auto-refresh should be added during the event.
+- Next steps: Set up the live notes sheet, populate a few sample entries, connect the published CSV URL, and verify that the featured note plus timeline reads well with real event-style content.
+
+## 2026-04-18 00:48 America/New_York
+
+- Feature name: Live reactions schema simplification
+- Work name: Remove author from live note model while keeping internal ids hidden
+- Description: Simplified the `Live Reactions` section so notes render as neutral event updates rather than person-attributed entries. Removed the `author` field from the live note parser and UI, while keeping `id` as an internal-only field used for stable row identity.
+- Value provided: The live feed is easier to maintain in Google Sheets and reads more like a clean event journal instead of a competing identity-based note system.
+- Files changed: `script.js`, `README.md`, `PROJECT_MEMORY.md`
+- Technical architecture changes or key technical decisions made: Kept `id` as a non-displayed internal key because the runtime still benefits from stable row identity; removed `author` from the public schema because it no longer serves the product intent of the live feed.
+- Assumptions: Live reactions are meant to function as a shared event log rather than an attributed conversation; removing author context improves clarity more than it reduces value.
+- Known limitations: Existing live reactions sheet tabs that still include an `author` column will need to be updated to match the new documented schema if you want the sheet structure to stay clean.
+- Key learnings that you can bring with you to future sessions: Not every editable data field deserves to survive into the final UX; if a field does not support the section’s core job, removing it can improve both content operations and presentation.
+- Remaining TODOs: Update the live reactions sheet headers if desired; re-check the section with real live-note content after the schema cleanup.
+- Next steps: Use the simplified row format for the live reactions tab and continue refining only the fields that genuinely improve the feed’s readability.

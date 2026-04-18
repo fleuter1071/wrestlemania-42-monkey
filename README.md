@@ -25,6 +25,7 @@ The site is intentionally simple: there is no build step, no framework, and no b
 |-- extras-videos.js
 |-- extras-predictions.js
 |-- extras-predictions-sheet.js
+|-- extras-live-sheet.js
 |-- Assets/
 |   |-- Danhausen_pointing.png
 |   |-- WM-42-IC-Ladder-Match.png
@@ -55,6 +56,7 @@ Then open `http://localhost:8080`.
 - Extras video choices live in [`extras-videos.js`](/C:/Users/dougs/wrestlemania-42-monkey/extras-videos.js).
 - Predictions data lives in [`extras-predictions.js`](/C:/Users/dougs/wrestlemania-42-monkey/extras-predictions.js).
 - Optional Google Sheet config for shared prediction editing lives in [`extras-predictions-sheet.js`](/C:/Users/dougs/wrestlemania-42-monkey/extras-predictions-sheet.js).
+- Optional Google Sheet config for live reaction notes lives in [`extras-live-sheet.js`](/C:/Users/dougs/wrestlemania-42-monkey/extras-live-sheet.js).
 - Image and audio assets are stored in [`Assets/`](/C:/Users/dougs/wrestlemania-42-monkey/Assets).
 
 ## Shared Prediction Editing With Google Sheets
@@ -72,6 +74,24 @@ id,night,match,pup_pup_winner,pup_pup_commentary,fiddle_winner,fiddle_commentary
 4. Keep [`extras-predictions.js`](/C:/Users/dougs/wrestlemania-42-monkey/extras-predictions.js) as a local fallback in case the sheet is unavailable.
 
 When the page loads, it will try the Google Sheet first and fall back to the local file if the sheet cannot be loaded.
+
+## Live Reactions With Google Sheets
+
+The `Live Reactions` section uses a second published Google Sheet CSV.
+
+Use these headers in row 1:
+
+```text
+id,timestamp,night,tag,match,entry,status,featured,sort_order
+```
+
+Recommended rules:
+- `featured` should be `yes` for the one note you want highlighted at the top
+- `sort_order` controls feed order if you want something more stable than sheet row order
+- `entry` is the main note body and is the only required content field beyond `id`
+- `id` is still required internally for stable note identity, but it is not displayed on the site
+
+Paste the published CSV URL into [`extras-live-sheet.js`](/C:/Users/dougs/wrestlemania-42-monkey/extras-live-sheet.js).
 
 ## Recommended Next Steps
 
