@@ -35,6 +35,12 @@ const escapeHtml = (value) => String(value ?? '')
   .replace(/"/g, '&quot;')
   .replace(/'/g, '&#39;');
 
+const normalizeComparisonKey = (value) => String(value ?? '')
+  .trim()
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, ' ')
+  .trim();
+
 const getYouTubeId = (entry) => {
   if (typeof entry === 'string') {
     return entry.trim();
@@ -711,12 +717,22 @@ const loadPredictionSheet = async () => {
 };
 
 const renderLiveReactionCard = (entry, featured = false) => {
+  const tagKey = normalizeComparisonKey(entry.tag);
+  const matchKey = normalizeComparisonKey(entry.match);
+  const contextLabel = entry.match
+    ? entry.match
+    : (entry.tag && tagKey !== matchKey ? entry.tag : '');
+
   const chips = [
-    entry.timestamp ? `<span class="story-chip">${escapeHtml(entry.timestamp)}</span>` : '',
     entry.night ? `<span class="story-chip gold">${escapeHtml(entry.night)}</span>` : '',
-    entry.tag ? `<span class="story-chip">${escapeHtml(entry.tag)}</span>` : '',
-    entry.match ? `<span class="story-chip">${escapeHtml(entry.match)}</span>` : ''
+    !featured && contextLabel ? `<span class="story-chip">${escapeHtml(contextLabel)}</span>` : ''
   ].filter(Boolean).join('');
+  const timestamp = entry.timestamp
+    ? `<span class="live-note-time">${escapeHtml(entry.timestamp)}</span>`
+    : '';
+  const footer = featured
+    ? `<div class="live-note-footer"><span>Live now</span>${timestamp}</div>`
+    : (timestamp ? `<div class="live-note-meta">${timestamp}</div>` : '');
 
   return `
     <article class="live-note-card ${featured ? 'is-featured' : ''}" data-live-note="${escapeHtml(entry.id)}">
@@ -724,7 +740,7 @@ const renderLiveReactionCard = (entry, featured = false) => {
         <div class="story-chip-row live-note-chips">${chips}</div>
       </div>
       <div class="live-note-body">${escapeHtml(entry.entry)}</div>
-      ${featured ? '<div class="live-note-footer">Latest note from the feed</div>' : ''}
+      ${footer}
     </article>
   `;
 };
