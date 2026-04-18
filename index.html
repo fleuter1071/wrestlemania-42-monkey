@@ -122,17 +122,15 @@
 
     <section class="curse-section" id="experience">
       <div class="container">
-        <div class="extras-media" id="extrasMedia">
-          <div class="extras-media-header">
-            <div>
-              <div class="eyebrow">Extras Video Reel</div>
-              <h2>Watch The Bonus Feed</h2>
-            </div>
-          </div>
-          <div class="extras-media-shell">
-            <div id="extrasFeature" aria-live="polite"></div>
-            <div class="extras-rail" id="extrasRail" role="tablist" aria-label="Extras video selection"></div>
-          </div>
+        <div class="live-reactions" id="liveReactions">
+          <div class="live-reactions-header">
+        <div>
+          <div class="eyebrow">Live Feed</div>
+          <h2>Live Reactions <span aria-hidden="true">🎉</span></h2>
+        </div>
+      </div>
+          <div class="live-reactions-featured" id="liveReactionsFeatured" aria-label="Featured live reaction"></div>
+          <div class="live-reactions-timeline" id="liveReactionsTimeline" aria-label="Live reactions timeline"></div>
         </div>
 
         <div class="predictions-board" id="predictionsBoard">
@@ -145,15 +143,17 @@
           <div class="predictions-list" id="predictionsList" aria-label="WrestleMania predictions"></div>
         </div>
 
-        <div class="live-reactions" id="liveReactions">
-          <div class="live-reactions-header">
-        <div>
-          <div class="eyebrow">Live Feed</div>
-          <h2>Live Reactions <span aria-hidden="true">🎉</span></h2>
-        </div>
-      </div>
-          <div class="live-reactions-featured" id="liveReactionsFeatured" aria-label="Featured live reaction"></div>
-          <div class="live-reactions-timeline" id="liveReactionsTimeline" aria-label="Live reactions timeline"></div>
+        <div class="extras-media" id="extrasMedia">
+          <div class="extras-media-header">
+            <div>
+              <div class="eyebrow">Extras Video Reel</div>
+              <h2>Watch The Bonus Feed</h2>
+            </div>
+          </div>
+          <div class="extras-media-shell">
+            <div id="extrasFeature" aria-live="polite"></div>
+            <div class="extras-rail" id="extrasRail" role="tablist" aria-label="Extras video selection"></div>
+          </div>
         </div>
 
         <div class="extras-easter-egg">
