@@ -244,6 +244,205 @@ h1 {
   padding: 28px 0;
 }
 
+.host-spotlight {
+  padding-top: 22px;
+}
+
+.host-spotlight-shell {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+  gap: 28px;
+  padding: 32px;
+  border-radius: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    radial-gradient(circle at top left, rgba(245, 158, 11, 0.22), transparent 26%),
+    radial-gradient(circle at top right, rgba(225, 29, 72, 0.16), transparent 30%),
+    radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.14), transparent 34%),
+    linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.035));
+  box-shadow: 0 34px 84px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+.host-spotlight-shell::before {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  pointer-events: none;
+}
+
+.host-spotlight-copy,
+.host-spotlight-poster {
+  position: relative;
+  z-index: 1;
+}
+
+.host-spotlight-copy {
+  display: grid;
+  align-content: center;
+  gap: 22px;
+}
+
+.host-spotlight-eyebrow {
+  width: fit-content;
+  background: rgba(245, 158, 11, 0.14);
+  border-color: rgba(245, 158, 11, 0.32);
+  color: #ffd48a;
+}
+
+.host-spotlight-copy h2 {
+  margin: 0;
+  max-width: 11ch;
+  font-family: "Barlow Condensed", Impact, sans-serif;
+  font-size: clamp(3rem, 6vw, 5.2rem);
+  line-height: 0.9;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.host-spotlight-copy h2 span {
+  display: block;
+  color: #ffe09f;
+  text-shadow: 0 0 26px rgba(245, 158, 11, 0.22);
+}
+
+.host-spotlight-lead {
+  margin: 0;
+  max-width: 58ch;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 1.02rem;
+  line-height: 1.9;
+}
+
+.host-spotlight-chips {
+  align-items: center;
+}
+
+.host-spotlight-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 18px;
+}
+
+.host-spotlight-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 0 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(245, 158, 11, 0.34);
+  background: linear-gradient(180deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.1));
+  color: #fff1c8;
+  font-size: 0.8rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  box-shadow: 0 18px 40px rgba(245, 158, 11, 0.14);
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.host-spotlight-cta:hover {
+  transform: translateY(-1px);
+  border-color: rgba(245, 158, 11, 0.5);
+  background: linear-gradient(180deg, rgba(245, 158, 11, 0.28), rgba(245, 158, 11, 0.14));
+}
+
+.host-spotlight-micro {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.8rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.host-spotlight-poster {
+  display: grid;
+  align-content: end;
+  gap: 18px;
+  min-height: 100%;
+  padding: 22px;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.14), transparent 28%),
+    linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+  overflow: hidden;
+}
+
+.host-spotlight-marquee {
+  width: fit-content;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.host-spotlight-figure {
+  position: relative;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  min-height: 320px;
+  margin: -8px -8px 0;
+}
+
+.host-spotlight-figure::before {
+  content: "";
+  position: absolute;
+  inset: auto 8% 6% 8%;
+  height: 64%;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.26), rgba(245, 158, 11, 0) 70%);
+  filter: blur(18px);
+}
+
+.host-spotlight-figure img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: min(100%, 430px);
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 28px 40px rgba(0, 0, 0, 0.38));
+}
+
+.host-spotlight-caption {
+  display: grid;
+  gap: 8px;
+  max-width: 34ch;
+}
+
+.host-spotlight-caption-kicker {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.host-spotlight-caption h3 {
+  margin: 0;
+  font-family: "Barlow Condensed", Impact, sans-serif;
+  font-size: clamp(1.7rem, 2.8vw, 2.4rem);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
 .section-head {
   display: flex;
   align-items: end;
@@ -1523,6 +1722,15 @@ h1 {
     grid-template-columns: 1fr;
   }
 
+  .host-spotlight-shell {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .host-spotlight-copy h2 {
+    max-width: 12ch;
+  }
+
   .detail-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -1619,6 +1827,52 @@ h1 {
 
   .hero {
     padding-top: 36px;
+  }
+
+  .host-spotlight-shell {
+    padding: 22px;
+    border-radius: 30px;
+  }
+
+  .host-spotlight-shell::before {
+    inset: 14px;
+    border-radius: 22px;
+  }
+
+  .host-spotlight-copy {
+    gap: 18px;
+  }
+
+  .host-spotlight-copy h2 {
+    font-size: clamp(2.5rem, 14vw, 4rem);
+    max-width: none;
+  }
+
+  .host-spotlight-lead {
+    font-size: 0.98rem;
+    line-height: 1.78;
+  }
+
+  .host-spotlight-actions {
+    align-items: start;
+  }
+
+  .host-spotlight-cta {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .host-spotlight-poster {
+    padding: 18px;
+    gap: 14px;
+  }
+
+  .host-spotlight-figure {
+    min-height: 260px;
+  }
+
+  .host-spotlight-caption h3 {
+    font-size: clamp(1.5rem, 8vw, 2rem);
   }
 
   .detail-grid {
